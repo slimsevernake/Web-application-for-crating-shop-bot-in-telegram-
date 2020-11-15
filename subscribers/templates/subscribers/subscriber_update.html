@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %} Редагувати підписника {{ channel.name }} {% endblock title %}
+
+{% block links %}
+    <a href="{% url 'bots-management:channel-list' %}"
+       class="text-dark text-decoration-none">
+        Канали
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:channel-detail' channel.slug %}"
+       class="text-dark text-decoration-none">
+        {{ channel.name }}
+    </a><span class="text-muted">/ Користувачі</span>
+{% endblock %}
+{% block content %}
+     <table class="table">
+
+         <tbody>
+            <tr>
+                <th>Користувач</th>
+                <td>{{subscriber.name}}</td>
+            </tr>
+             <tr>
+                <th>Канал</th>
+                <td>{{subscriber.messengers_bot}}</td>
+            </tr>
+            <tr>
+                <th>ID</th>
+                <td>{{subscriber.user_id}}</td>
+            </tr>
+            <tr>
+                <th>Аватар</th>
+                <td>{% if subscriber.avatar %}
+                    <img src="{{subscriber.avatar}}" alt="">
+                    {% endif %}
+                </td>
+            </tr>
+
+           <form action="" method="post">{% csrf_token %}
+               <tr>
+                    <th>{{form.is_active.label}}</th>
+                    <td>{{form.is_active}}</td>
+               </tr>
+               <tr>
+                   <th>{{form.info.label}}</th>
+                   <td>{{form.info}}</td>
+               </tr>
+               <tr>
+                   <th></th>
+               <td><input type="submit" class="btn btn-secondary btn-sm" value="Зберегти"></td>
+               </tr>
+                </form>
+
+         <tr></tr>
+         </tbody>
+    </table>
+{% endblock content %}

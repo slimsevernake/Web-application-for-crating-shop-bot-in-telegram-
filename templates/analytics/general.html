@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+
+{% block links %}
+    <a href="{% url 'bots-management:channel-list' %}"
+       class="mt-3 mb-3 text-dark text-decoration-none">
+        Канали
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:channel-detail' channel.slug %}"
+       class="mt-3 mb-3 text-dark text-decoration-none">
+        {{ channel.name }}
+    </a><span class="text-muted">/ Аналітика</span>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <form method="GET" class="col-10">
+            <div class="row ">
+                {% for field in form %}
+                    <div class="form-group col-2">
+                        <label for="{{ field.auto_id }}">{{ field.label_tag }}</label>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+
+                <div class="form-group col-2">
+                    <br>
+                    <input type="submit" value="Отримати графік"
+                           class="btn btn-info mt-3">
+                </div>
+
+                <div class="form-group col-3">
+                    <br>
+                    <a href="{% url 'bots-management:analytics:bot-analytics' channel.slug %}"
+                       class="btn btn-info mt-3">
+                        Окрема аналітика ботів
+                    </a>
+                </div>
+            </div>
+        </form>
+        <div class="col-2">
+            <form method="POST"
+                  action="{% url 'bots-management:analytics:download-analytics' channel.slug %}">
+                {% csrf_token %}
+                <br>
+                <input type="hidden" name="general_data"
+                       value="{{ all_data }}">
+                <div class="form-group">
+                    <input type="submit" value="Завантажити"
+                           class="btn btn-info mt-3">
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <hr>
+    <div class="container">
+        <h3 class="text-center">
+            Аналітика з {{ date_from|date:"d.m.Y" }}
+            по {{ date_to|date:"d.m.Y" }}
+        </h3>
+        <div class="row">
+            <div id="placeholder" class="col-9" style="height:350px;"></div>
+            <div class="col-3" id="checkboxes_data">
+                Графіки, що відображати: <br>
+                <input type="checkbox" id="cbdata_general" checked>
+                <label for="cbdata_general" style="display:inline">
+                    Загальна інформація
+                </label><br>
+                {% for bot in bots %}
+                    <input type="checkbox" id="cbdata_{{ bot }}">
+                    <label for="cbdata_{{ bot }}" style="display:inline">
+                        {{ bot.capitalize }}
+                    </label><br>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+    <script type="text/javascript"
+            src="//cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/jquery.flot.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.time.js"
+            integrity="sha512-fEs27qcvuepYOlPbogPMCRS2q1JLH+sSuTf59pTAHu224ltQYiSF5wKkZ5AQgkmn39D8BzKkJfVNQrsTEHvWgQ=="
+            crossorigin="anonymous"></script>
+
+    <script>
+        // flot data
+        let all_data = {{ all_data|safe }};
+        let options = {
+            xaxis: {
+                mode: "time",
+                timeformat: "%Y-%m-%d",
+                minTickSize: [1, "day"],
+            },
+            grid: {
+                hoverable: true
+            }
+
+        };
+        $(document).ready(function () {
+            let dataSet = generateDataForRepresentation(all_data);
+            toggleSeries(dataSet, options);
+
+            $("#checkboxes_data input").change(function () {
+                toggleSeries(dataSet, options);
+            });
+
+            $("#placeholder").bind("plothover", function (event, pos, item) {
+                if (item) {
+                    $("#tooltip").remove();
+                    let tooltipDataObject = getDataOfDate(all_data, item.datapoint[0]);
+
+                    let tooltipStr;
+                    if (tooltipDataObject.analytics_type === "bot") {
+                        tooltipStr = createTooltipBotString(tooltipDataObject, item.series.label);
+                    } else if (tooltipDataObject.analytics_type === "subs") {
+                        tooltipStr = createTooltipSubsString(tooltipDataObject, item.series.label);
+                    } else if (tooltipDataObject.analytics_type === "subs_increase") {
+                        tooltipStr = createTooltipSubsIncreaseString(tooltipDataObject, item.series.label);
+                    } else if (tooltipDataObject.analytics_type === "subs_decrease") {
+                        tooltipStr = createTooltipSubsDecreaseString(tooltipDataObject, item.series.label);
+                    }
+
+                    showTooltip(item.pageX, item.pageY, tooltipStr)
+                } else {
+                    $("#tooltip").remove();
+                }
+            });
+        });
+
+        function showTooltip(x, y, contents) {
+            // creates tooltip near point we hover to.
+            $("<div id='tooltip'>" + contents + "</div>").css({
+                position: "absolute",
+                top: y - 110,
+                left: x - 190,
+                border: "1px solid #fdd",
+                padding: "2px",
+                "background-color": "#fee",
+                opacity: 0.90
+            }).appendTo("body").fadeIn(200);
+        }
+
+        function toggleSeries(dataSet, options) {
+            let data = [];
+
+            $("#checkboxes_data input[type='checkbox']").each(function () {
+                if ($(this).is(":checked")) {
+                    let messenger = $(this).attr("id").replace("cbdata_", "");
+                    data.push({
+                        label: messenger,
+                        data: dataSet[messenger],
+                        points: {
+                            fillColor: "black",
+                            show: true
+                        },
+                        lines: {
+                            show: true
+                        }
+                    });
+                }
+            });
+
+            $.plot($("#placeholder"), data, options);
+        }
+
+        function getDataOfDate(general_data, date) {
+            // finds dict from general_analytics list
+            // where date is equal to date in out point
+            for (let i = 0; i < general_data.length; i++) {
+                if (general_data[i].date * 1000 === date) {
+                    return general_data[i];
+                }
+            }
+        }
+
+        function createDateString(date) {
+            let strDate = new Date(date * 1000);
+            return "Дата: " + strDate.getFullYear() + "." +
+                (strDate.getMonth() + 1) + "." + strDate.getDate();
+        }
+
+        function createTooltipBotString(data, label) {
+            let str = createDateString(data.date) + "   Повідомлення<br>";
+
+            if (label === "general") {
+                str += "Загальне: " + data.num + " повідомлень, ефективність: " + data.efficiency + " %";
+                for (let i = 0; i < data.bots_stats.length; i++) {
+                    let bot = data.bots_stats[i];
+                    str += "<br>" + bot.bot + ": " + bot.num + " повідомлень, ефективність: " + bot.efficiency + " %";
+                }
+            } else {
+                let bot_data = data.bots_stats.find(currentValue => currentValue.bot === label);
+                str += bot_data.bot.toUpperCase() + "<br>Повідомелень: " + bot_data.num + "<br>Ефективність: " + bot_data.efficiency + " %";
+            }
+            return str;
+        }
+
+        function createTooltipSubsString(data, label) {
+            let str = createDateString(data.date) + " Всього підписників<br>";
+            if (label === "general") {
+                str += "Загальне: " + data.num + " підписників";
+                for (let i = 0; i < data.bots_stats.length; i++) {
+                    let bot = data.bots_stats[i];
+                    str += "<br>" + bot.bot + ": " + bot.num + " підписників";
+                }
+            } else {
+                let bot_data = data.bots_stats.find(currentValue => currentValue.bot === label);
+                str += bot_data.bot.toUpperCase() + "<br>Підписників: " + bot_data.num;
+            }
+
+            return str;
+        }
+
+        function createTooltipSubsDecreaseString(data, label) {
+            let str = createDateString(data.date) + "   Відписки<br>";
+            if (label === "general") {
+                str += "Загальне: " + data.num + " покинуло, ефективність: " + data.efficiency + " %";
+                for (let i = 0; i < data.bots_stats.length; i++) {
+                    let bot = data.bots_stats[i];
+                    str += "<br>" + bot.bot + ": " + bot.num + " покинуло, ефективність: " + bot.efficiency + " %";
+                }
+            } else {
+                let bot_data = data.bots_stats.find(currentValue => currentValue.bot === label);
+                str += bot_data.bot.toUpperCase() + "<br>Покинуло: " + bot_data.num + "<br>Ефективність: "+ bot_data.efficiency + " %";
+            }
+
+            return str;
+        }
+
+        function createTooltipSubsIncreaseString(data, label) {
+            let str = createDateString(data.date) + "   Підписки<br>";
+
+            if (label === "general") {
+                str += "Загальне: " + data.num + " підписників, ефективність: " + data.efficiency + " %";
+                for (let i = 0; i < data.bots_stats.length; i++) {
+                    let bot = data.bots_stats[i];
+                    str += "<br>" + bot.bot + ": " + bot.num + " підписників, ефективність: " + bot.efficiency + " %";
+                }
+            } else {
+                let bot_data = data.bots_stats.find(currentValue => currentValue.bot === label);
+                str += bot_data.bot.toUpperCase() + "<br>Нових: " + bot_data.num + "<br>Ефективність: "+ bot_data.efficiency + " %";
+            }
+
+            return str;
+        }
+
+        function generateDataForRepresentation(all_data) {
+            let general_analytics = [], viber_analytics = [],
+                tg_analytics = [];
+
+            for (let i = 0; i < all_data.length; i++) {
+                general_analytics.push([all_data[i].date * 1000, all_data[i].num]);
+                for (let j = 0; j < all_data[i].bots_stats.length; j++) {
+                    if (all_data[i].bots_stats[j].bot === "viber") {
+                        viber_analytics.push([all_data[i].date * 1000, all_data[i].bots_stats[j].num]);
+                    } else if (all_data[i].bots_stats[j].bot === "telegram") {
+                        tg_analytics.push([all_data[i].date * 1000, all_data[i].bots_stats[j].num]);
+                    }
+                }
+            }
+            return {
+                "general": general_analytics,
+                "viber": viber_analytics,
+                "telegram": tg_analytics
+            };
+        }
+
+    </script>
+{% endblock %}

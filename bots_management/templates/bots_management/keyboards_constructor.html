@@ -1,0 +1,104 @@
+{% extends "base_keyboards.html" %}
+{% block title %}Keyboards{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <input type="radio" name="inset" id="tab-viber" checked>
+        <input type="radio" name="inset" id="tab-telegram">
+        <div class="container__block view-block">
+            <div class="view-block__control-panel">
+                <select class="view-block__page" name="page">
+                    <option>Головна 1</option>
+                    <option>Головна 2</option>
+                    <option>Головна 3</option>
+                    <option>Головна 4</option>
+                </select>
+                <button class="container__button save-all-buttons">Зберегти</button>
+                <button class="container__button delete-all-buttons">Видалити</button>
+            </div>
+            
+            <div class="view-block__main-panel">
+                <div class="view-block__view-grid ">
+                    <div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>
+                    <div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>
+                </div>
+                <label for="tab-viber" class="view-block__view-buttons"></label>
+            </div>
+            <button class="container__button button-add">Додати кнопку</button>
+            <button class="container__button button-delete">Видалити кнопку</button>
+        </div>
+        <div class="container__block control-block">
+            
+            <div class="control-block__constructor">
+                
+                <label for="tab-viber" class="control-block__tabs viber-cons">Спільні налаштування</label>              
+                <label for="tab-telegram" class="control-block__tabs telegram-cons">Viber налаштування</label>
+
+                <div id="viber-content" class="control-block__tab-block">
+                    <label for="b-name" class="control-block__labels">Назва кнопки</label>
+                    <input type="text" id="b-name" class="control-block__inputs"/>
+
+                    <label for="b-text" class="control-block__labels">Текст кнопки</label>
+                    <input type="text" id="b-text" class="control-block__inputs"/>
+
+                    <!--  -->
+                    <label for="b-description" class="control-block__labels">Опис кнопки</label>
+                    <textarea id="b-description" class="control-block__inputs"></textarea>
+
+                    <label for="b-action" class="control-block__labels">Подія, яка трапиться</label>
+                    <select id="b-action" class="control-block__inputs">
+                        <option value="" disabled selected>Оберіть пункт</option>
+                        <option value="back">Back</option>
+                        <option value="home">Home</option>
+                        <option value="second">Second</option>
+                    </select>
+
+                    <label for="b-type" class="control-block__labels">Тип кнопки</label>
+                    <select id="b-type" class="control-block__inputs">
+                        <option value="" disabled selected>Оберіть пункт</option>
+                        <option value="reply">reply</option>
+                        <option value="open-url">open-url</option>
+                        <option value="location-picker">location-picker</option>
+                        <option value="share-phone">share-phone</option>
+                        <option value="none">none</option>
+                    </select>
+                </div>
+                <div id="telegram-content" class="control-block__tab-block">
+                    <label for="b-width" class="control-block__labels">Ширина кнопки (1-6)</label>
+                    <input type="number" min="1" max="6" id="b-width" class="control-block__inputs"/>
+
+                    <label for="b-height" class="control-block__labels">Висота кнопки (1-2)</label>
+                    <input type="number" min="1" max="2" id="b-height" class="control-block__inputs"/>
+
+                    <label for="b-background" class="control-block__labels">Колір фона кнопки</label>
+                    <input type="color" id="b-backgroundColor" class="control-block__inputs"/>
+
+                    <label for="b-color" class="control-block__labels">Колір тексту кнопки</label>
+                    <input type="color" id="b-color" class="control-block__inputs"/>
+
+                    <label for="b-vertical" class="control-block__labels">Вир. тексту вертикально</label>
+                    <select id="b-vertical" class="control-block__inputs">
+                        <option value="" disabled selected>Оберіть пункт</option>
+                        <option value="flex-start">Зверху</option>
+                        <option value="center">Посередині</option>
+                        <option value="flex-end">Знизу</option>
+                    </select>
+
+                    <label for="b-horizontal" class="control-block__labels">Вир. тексту горизонтально</label>
+                    <select id="b-horizontal" class="control-block__inputs">
+                        <option value="" disabled selected>Оберіть пункт</option>
+                        <option value="left">Зліва</option>
+                        <option value="center">Посередині</option>
+                        <option value="right">Справа</option>
+                    </select>
+
+                    <label for="b-size" class="control-block__labels">Розмір тексту</label>
+                    <input type="number" min="10" id="b-fontSize" class="control-block__inputs"/>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+{% endblock content %}
+

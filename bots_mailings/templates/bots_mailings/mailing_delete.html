@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title%} Видалення розсилки {% endblock %}
+
+{% block links %}
+    <a href="{% url 'bots-management:channel-list' %}"
+       class="text-dark text-decoration-none">
+        Канали
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:channel-detail' mailing.channel.slug %}"
+       class="text-dark text-decoration-none">
+        {{ mailing.channel.name }}
+    </a><span class="text-muted">/</span>
+    <a href="{% url 'bots-management:mailings:mailing-list' mailing.channel.slug %}"
+       class="text-dark text-decoration-none">
+        Розсилки
+    </a><span class="text-muted">/</span>
+    <a href="{{ mailing.get_absolute_url }}"
+       class="text-dark text-decoration-none">
+        {{ mailing.id }}
+    </a><span class="text-muted">/</span>
+    <a href="{{ mailing.get_delete_url }}"
+       class="text-dark text-decoration-none">
+        Видалити
+    </a>
+{% endblock %}
+
+{% block content %}
+   <form method="post">{% csrf_token %}
+        <p>Ви дійсно бажаєте видалити розсилку?</p>
+        <p class="text-danger">Розсилки у мессенджері Viber не можуть бути видаленими</p>
+        <p class="text-warning">Розсилки у мессенджері Telegram можуть бути видаленими лише упродовж 48 годин після відправки</p>
+        <input type="submit" class="btn btn-danger" value="Підтверджую">
+        <a href="{% url 'bots-management:mailings:mailing-list' mailing.channel.slug %}" class="btn btn-info">
+            Скасувати
+        </a>
+    </form>
+{% endblock %}

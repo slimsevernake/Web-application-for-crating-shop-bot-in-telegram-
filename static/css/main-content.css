@@ -1,0 +1,80 @@
+.main {
+    position: relative;
+    /* margin-top: 45px; */
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    /**/
+    height: 700px;
+}
+
+.main__add-button {
+    position: absolute;
+    padding: 5px 10px;
+    top: 15px;
+    right: 15px;
+    border-radius: 5px;
+    vertical-align: middle;
+    color: #fff;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border: 0;
+    border-bottom: 2px solid #3160B6;
+    background: #4a89dc;
+    text-shadow: 1px 1px 0 rgba(39, 110, 204, .5);
+    transition: all 0.15s ease;
+}
+
+.main__add-button:hover { 
+    background: #357bd8;
+}
+
+.main__channel-block {
+    color: #636363;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 500px;
+	margin-top: 20px;
+	padding: 15px;
+	background: #fafafa;
+	border: 1px solid #ebebeb;
+    box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,
+                rgba(0,0,0,0.09804) 0px 1px 2px 0px;
+}
+
+/* .main__remove {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+} */
+.main__edit {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+}
+
+.main__remove:hover,
+.main__edit:hover {
+    cursor: pointer;
+    color: #4a89dc;
+}
+
+/*
+font-family: 'FontAwesome';
+    content: '\f1f8';
+    font-size: 18px;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);*/

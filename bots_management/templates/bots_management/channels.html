@@ -1,0 +1,51 @@
+{% extends "base1.html" %}
+{% load static %}
+{% block title %}Channels{% endblock title %}
+
+{% block content %}
+
+    <input id="modal-controller" type="checkbox"/>
+        <div class="modal" style="overflow-y: hidden;">
+			<div class="modal__box" style="height: auto;">
+				<div class="modal__title">
+					Редагувати канал
+				</div>
+				<div class="modal__main">
+					<form action="" class="channel_update">  {% csrf_token %}
+                        <input class="modal__field" type="text" name="id" style="display: none;"/>
+
+                        <label for="i_title" class="modal__label">Назва</label>
+                        <input id="i_title" class="modal__field" type="text" name="title"/>
+
+                        <label for="i_url" class="modal__label">URL</label>
+                        <input id="i_url" class="modal__field" type="text" name="url"/>
+
+                        <label for="i_moderators" class="modal__label">Модератори</label>
+                        <select id="i_moderators" class="select2-search" name="moderators" multiple="multiple">
+                        </select>
+
+                        <label for="i_allowUserMedia" class="modal__label">Дозволити обробку медіа від користувача</label>
+                        <input id="i_allowUserMedia" class="modal__field" type="checkbox" name="allowUserMedia"/>
+
+                        <label for="i_allowUserGeolocation" class="modal__label">Дозволити обробку геолокації від користувача</label>
+                        <input id="i_allowUserGeolocation" class="modal__field" type="checkbox" name="allowUserGeolocation"/>
+                            
+                        <label for="i_allowMailing" class="modal__label">Дозволити розсилку без підтвердження адміністратора</label>
+                        <input id="i_allowMailing" class="modal__field" type="checkbox" name="allowMailing"/>
+
+                        <label for="i_description" class="modal__label">Опис</label>
+						<textarea id="i_description" class="modal__field" name="description"></textarea>
+                    </form>
+				</div>
+				<div class="modal__panel">
+					<label for="modal-controller" class="button modal__close-button button-send">Готово</label>
+					<label for="modal-controller" class="button modal__close-button">Відмінити</label>
+				</div>				
+			</div>
+        </div>
+
+        <div class="main">
+            <button class="main__add-button">Створити</button>
+        </div>
+{% endblock content %}
+

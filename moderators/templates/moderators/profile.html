@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Авторизація модератора{% endblock %}
+
+{% block content %}
+    <div class="row d-flex justify-content-center">
+        <div class="d-flex w-25 flex-column bg-dark p-3 m-2">
+            <h2 class="display-5 text-center text-light ">Профіль {{ user.username }}</h2>
+            <hr style="border-top: 1px solid honeydew; width: 100%">
+            <p class="text-white">Логін: {{ user.username }}</p>
+            <p class="text-white">Поштова адреса: {{ user.email }}</p>
+            {% if user.first_name %}
+                <p class="text-white">Ім'я: {{ user.first_name }}</p>
+            {% endif %}
+            {% if user.first_name %}
+                <p class="text-white">Прізвище: {{ user.last_name }}</p>
+            {% endif %}
+
+            {# edit profile of the moderator #}
+            <a type="button" class="btn btn-light mb-1 w-50 align-self-center"
+               href="{% url "moderators:user-profile-edit" %}">
+                Редагувати профіль
+            </a>
+            <hr style="border-top: 1px solid honeydew; width: 100%">
+
+            {# Change password #}
+            <a type="button" class="btn btn-light w-50 align-self-center"
+               href="{% url "moderators:user-change-password" %}">
+                Змінити пароль
+            </a>
+            <hr style="border-top: 1px solid honeydew; width: 100%">
+
+            {# Change password #}
+            <a type="button" class="btn btn-light w-50 align-self-center"
+               href="{% url "bots-management:channel-list" %}">
+                До доступних каналів
+            </a>
+            <hr style="border-top: 1px solid honeydew; width: 100%">
+
+            {# Logout #}
+            <a type="button" class="btn btn-danger w-50 align-self-center"
+               href="{% url "moderators:logout" %}">
+                Вийти з аккаунту
+            </a>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
+    <script type="text/javascript" src="{% static "moderators/ajax.js" %}"></script>
+
+{% endblock scripts %}

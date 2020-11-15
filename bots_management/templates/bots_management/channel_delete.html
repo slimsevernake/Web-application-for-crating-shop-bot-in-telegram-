@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title%} Видалення {% endblock %}
+
+{% block links %}
+    <a href="{% url 'bots-management:channel-list' %}"
+       class="mt-3 mb-3 text-dark text-decoration-none">
+        Канали
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:channel-detail' object.slug %}"
+       class="mt-3 mb-3 text-dark text-decoration-none">
+        {{ object.name }}
+    </a><span class="text-muted">/ Видалення</span>
+{% endblock %}
+
+{% block content %}
+        <a href="{% url 'bots-management:channel-detail' object.slug %}"
+           class="btn btn-info btn-lg active mt-3 mb-3">
+            &#8592 Назад
+        </a>
+       <form method="post">{% csrf_token %}
+		    <p>Ви дійсно бажаєте видалити канал "{{ object.name }}"?</p>
+		    <input type="submit" class="btn btn-danger" value="Підтверджую">
+            <a class="btn btn-info" href="{% url 'bots-management:channel-detail' object.slug %}">Скасувати</a>
+		</form>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{
+	"info": {
+		"_postman_id": "e5fa919b-4d94-4976-80b8-9abdfe1cb824",
+		"name": "MVD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "set hook",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Viber-Auth-Token",
+						"value": "4ba5ea28c5a7dd8a-376cadc7e5fce6ff-aba51f8dbbadd623",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"url\": \"https://bed24869b535.ngrok.io/bot/\",\n    \"event_types\":[\n        \"delivered\",\n        \"seen\",\n        \"failed\",\n        \"subscribed\",\n        \"unsubscribed\",\n        \"conversation_started\"\n        ]\n}"
+				},
+				"url": {
+					"raw": "https://chatapi.viber.com/pa/set_webhook",
+					"protocol": "https",
+					"host": [
+						"chatapi",
+						"viber",
+						"com"
+					],
+					"path": [
+						"pa",
+						"set_webhook"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

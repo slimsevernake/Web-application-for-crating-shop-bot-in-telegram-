@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}  {% endblock title %}
+
+{% block links %}
+    <a href="{% url 'bots-management:channel-list' %}"
+       class="text-dark text-decoration-none">
+        Канали
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:channel-detail' channel.slug %}"
+       class="text-dark text-decoration-none">
+        {{ channel.name }}
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:subscribers:help-messages' channel.slug %}"
+       class="text-dark text-decoration-none">
+        Повідомлення про допомогу
+    </a>
+    <span class="text-muted">/ Відповідь</span>
+{% endblock %}
+
+{% block content %}
+    <h2 class="display-5 text-center">Відповісти на звернення</h2>
+    <h4>Текст звернення: {{ object.message.text }}</h4>
+    {% if object.message.location %}
+        {{ object.message.location }}
+    {% elif object.message.url %}
+        <a href="{{ object.message.url }}">Посилання на прийшовший документ</a>
+    {% endif %}
+    <form method="POST">{% csrf_token %}
+        {% for field in form %}
+            {% if not field.is_hidden %}
+                <div class="form-group">
+                    <label for="{{ field.auto_id }}">{{ field.label_tag }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="text-danger"> {{ field.errors }} </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <input type="submit" class="btn btn-success" value="Відповісти">
+        <a class="btn btn-info" href="{% url 'bots-management:subscribers:help-messages' channel.slug %}">
+            Передати іншому модератору TODO
+        </a>
+    </form>
+{% endblock content %}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		{% load static %}
+		<title>{% block title %} {% endblock title %}</title>
+	    <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" >
+<!--  favicon  -->
+            <link rel="shortcut icon" type="image/png" sizes="32x32"  href="{% static 'favicon.png' %}">
+
+		<!--		bootstrap-->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	</head>
+	<body>
+
+		<header class="header">
+            <h1 class="header__title">Адміністрування</h1>
+        </header>
+
+        <!-- block for alert message-->
+		<div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                {% if messages %}
+                        {% for message in messages %}
+                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                  <span {% if message.tags %} class="{{ message.tags }}" {% endif %}> Внимание! {{ message }}</span>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                              </div>
+                         {% else %}
+                              <div id="my-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+                                  <span {% if message.tags %} class="{{ message.tags }}"{% endif %}> {{ message }} </span>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                              </div>
+                         {% endif %}
+                        {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+        {% block content %} {% endblock content %}
+		<footer class="footer"></footer>
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+		{% block script %} {% endblock script %}
+    </body>
+</html>

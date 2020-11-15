@@ -1,0 +1,23 @@
+{% extends "base_statistics.html" %}
+{% block title %}Statistics{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="block controller-block">
+            <input type="date" id="from-date" class="controller-block__inputs" value="2020-09-25" min="2020-09-25"/>
+            <input type="date" id="to-date" class="controller-block__inputs"/>
+            <select id="data-type" class="controller-block__inputs">
+                <option value="botsStat">Статистика ботів</option>
+                <option value="usersStat">Статистика користувачів</option>
+                <option value="usersGrowth">Приріст користувачів</option>
+                <option value="usersOutput">Вихід користувачів</option>
+            </select>
+            <button id="get-graphic" class="controller-block__buttons">Отримати графік</button>
+            <button class="controller-block__buttons">Окрема аналітика ботів</button>
+            <button class="controller-block__buttons">Завантажити</button>
+        </div>
+        <div class="block visual-block">
+            <div id="area-example" style="height: 400px; width: 800px;"></div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %} Редагувати розсилку для каналу {% endblock %}
+
+{% block links %}
+    <a href="{% url 'bots-management:channel-list' %}"
+       class="text-dark text-decoration-none">
+        Канали
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:channel-detail' mailing.channel.slug  %}"
+       class="text-dark text-decoration-none">
+        {{ mailing.channel.name }}
+    </a><span class="text-muted">/</span>
+    <a href="{% url 'bots-management:mailings:mailing-list' mailing.channel.slug %}"
+       class="text-dark text-decoration-none">
+        Розсилки
+    </a><span class="text-muted">/</span>
+    <a href="{{ mailing.get_absolute_url }}"
+       class="text-dark text-decoration-none">
+        {{ mailing.id }}
+    </a><span class="text-muted">/</span>
+    <a href="{{ mailing.get_delete_url }}"
+       class="text-dark text-decoration-none">
+        Редагувати
+    </a>
+{% endblock %}
+
+{% block content %}
+    <h1 class="font-weight-normal">Редашувати розсилку для каналу
+        <span class="font-weight-bold">
+            {{ channel_name }}
+        </span>
+    </h1>
+{#    <p class="text-danger">Розисилки у мессенджері Viber не можуть бути зміненими</p>#}
+    <form method="POST" enctype="multipart/form-data" class="mb-3">{% csrf_token %}
+        {% for field in form %}
+            {% if not field.is_hidden %}
+                <div class="form-group">
+                    <label for="{{ field.auto_id }}">{{ field.label_tag }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="text-danger"> {{ field.errors }} </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <input type="submit" class="btn btn-success" value="Редагувати">
+        <a href="{% url "bots-management:mailings:mailing-list" mailing.channel.slug %}" class="btn btn-danger">Скасувати</a>
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.js"></script>
+    <script>
+        $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+        });
+    </script>
+{% endblock scripts %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %} Клавіатура {{ keyboard.name }} {% endblock %}
+
+{% block links %}
+    <a href="{% url 'bots-management:channel-list' %}"
+       class="text-dark text-decoration-none">
+        Канали
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:channel-detail' channel.slug %}"
+       class="text-dark text-decoration-none">
+        {{ channel.name }}
+    </a><span class="text-muted">/</span>
+    <a href="{% url 'bots-management:subscribers:help-messages' channel.slug %}"
+       class="text-dark text-decoration-none">
+        Повідомлення про допомогу
+    </a>
+    <span class="text-muted">/ Запит № {{ reply.id }}</span>
+{% endblock %}
+
+{% block content %}
+    <div class="card mt-3 mb-3">
+        <div class="card-header">
+            <h3>Запит № {{ reply.id }}</h3>
+        </div>
+        <div class="card-body">
+
+            <p class="card-text">Повідомлення: {{ reply.message }}</p>
+            <p class="card-text">Модератори: {% for moderator in reply.moderators.all %}{{ moderator.username }}, {% endfor %}</p>
+            <p class="card-text">Події: {% for action in reply.actions.all %}{{ action.name }}, {% endfor %}</p>
+
+            <p class="card-text">Оброблюється: {{ reply.is_started }}</p>
+            <p class="card-text">Закрито: {{ reply.is_closed }}</p>
+            <p class="card-text">Опис: {{ reply.description }}</p>
+            <p class="card-text">Оновлено: {{ reply.updated|date:"Y-m-d H:i" }}</p>
+        </div>
+    </div>
+
+{% endblock %}

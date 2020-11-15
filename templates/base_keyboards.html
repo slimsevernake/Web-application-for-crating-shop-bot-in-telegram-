@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		{% load static %}
+		<title>{% block title %} {% endblock title %}</title>
+	    <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" >
+        <link rel="stylesheet" type="text/css" href="{% static 'keyboard/css/main.css' %}" >
+
+	</head>
+	<body>
+		<header class="header">
+            <h1 class="header__title">Редактор клавіатур</h1>
+            <span class="header__profile fa fa-user-circle" aria-hidden="true"></span>
+        </header>
+        {% block content %} HELLO {% endblock content %}
+        <footer class="footer"></footer>
+    {% block scripts %}
+        <script src="{% static '/keyboard/js/calculation.js' %}"></script> 
+        <script src="{% static '/keyboard/js/main.js' %}"></script>
+    {% endblock scripts %}
+
+    </body>
+</html>

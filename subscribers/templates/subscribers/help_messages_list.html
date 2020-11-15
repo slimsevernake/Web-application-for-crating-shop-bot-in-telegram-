@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}  {% endblock title %}
+
+{% block links %}
+    <a href="{% url 'bots-management:channel-list' %}"
+       class="text-dark text-decoration-none">
+        Канали
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:channel-detail' channel.slug %}"
+       class="text-dark text-decoration-none">
+        {{ channel.name }}
+    </a><span class="text-muted">/ Повідомлення про допомогу</span>
+{% endblock %}
+
+{% block content %}
+    <div class="mt-3 mb-3 md-center">
+        <a href="{% url 'bots-management:subscribers:help-messages' channel.slug %}?show=all" class="btn btn-info">Показати всі запити</a>
+        <a href="{% url 'bots-management:subscribers:help-messages' channel.slug %}?show=active" class="btn btn-info">Показати лише активні запити</a>
+        <a href="{% url 'bots-management:subscribers:help-messages' channel.slug %}?show=started" class="btn btn-info">Показати лише розпочаті запити</a>
+        <a href="{% url 'bots-management:subscribers:help-messages' channel.slug %}?show=closed" class="btn btn-info">Показати лише закриті запити</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Автор повідомлення</th>
+                <th scope="col">Повідомлення опрацьовується</th>
+                <th scope="col">Повідомлення закрите</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for message in messages %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ message.sender.name }}</td>
+                    <td>{{ message.help_reply.is_started }}</td>
+                    <td>{{ message.help_reply.is_closed }}</td>
+                    <td>
+                        {% if not message.help_reply.is_closed %}
+                        <a href="{{ message.help_reply.get_reply_url }}" class="">Відповісти</a>
+                        {% else %}
+                            <a href="{{ message.help_reply.get_absolute_url }}" class="">Детальніше</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}

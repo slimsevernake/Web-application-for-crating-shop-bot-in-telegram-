@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Авторизація модератора{% endblock %}
+
+{% block content %}
+    <div class="row d-flex justify-content-center">
+        <form method="POST" class="d-flex w-25 flex-column bg-dark p-3 m-2" id="form">
+            {% if next %}
+                {% if user.is_authenticated %}
+                    <div class="alert alert-warning" role="alert">
+                         У вас немає доступу до цієї сторінки.
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning" role="alert">
+                         Увійдіть до аккаунту, щоб перейти до цієї сторінки.
+                    </div>
+                {% endif %}
+            {% endif %}
+            {% csrf_token %}
+            <h2 class="display-5 text-center text-light ">Вхід до акаунту</h2>
+            {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                    Ваши логін і пароль не збігаються. Будь ласка, спробуйте ще раз.
+                </div>
+            {% endif %}
+            {% for field in form %}
+                {% if not field.is_hidden %}
+                    <div class="form-group">
+                        <label for="{{ field.auto_id }}" class="text-light">{{ field.label_tag }} </label>
+                        {{ field }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            <a href="#" class="text-link" id="ajax-reset-password">Забули пароль?</a>
+            <button type="submit" class="btn btn-light w-50 mt-3">Увійти</button>
+        </form>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
+    <script type="text/javascript" src="{% static "moderators/ajax.js" %}"></script>
+
+{% endblock scripts %}

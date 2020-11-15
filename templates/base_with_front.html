@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		{% load static %}
+		<title>{% block title %} {% endblock title %}</title>
+	    <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href={% static "fonts/font-awesome/css/font-awesome.min.css" %}>
+        <link rel="stylesheet" type="text/css" href={% static "/css/main.css" %} >
+
+	</head>
+	<body>
+		<header class="header">
+            <h1 class="header__title">Адміністрування</h1>
+        </header>
+        {% block content %} {% endblock content %}
+        <footer class="footer"></footer>
+	{% block scripts %} {% endblock scripts %}
+
+    </body>
+</html>

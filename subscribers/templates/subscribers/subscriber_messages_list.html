@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %} Повідомлення користувачів каналу {{ channel.name }} {% endblock title %}
+
+{% block links %}
+    <a href="{% url 'bots-management:channel-list' %}"
+       class="text-dark text-decoration-none">
+        Канали
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:channel-detail' channel.slug %}"
+       class="text-dark text-decoration-none">
+        {{ channel.name }}
+    </a><span class="text-muted">/ Повідомлення</span>
+{% endblock %}
+
+{% block content %}
+<style type="text/css">
+    TD DIV {
+     overflow: scroll; /* Добавляем полосы прокрутки */
+     width: 200px; /* Ширина элемента */
+     height: 75px;
+    }
+  </style>
+<div class="row justify-content-md-center">
+    <div class="col-md-auto">
+        {% if messenger != 'all' %}
+            <a href="{% url 'bots-management:subscribers:subscriber-messages' slug 'all' %}" class="btn btn-sm btn-secondary">
+                Всі
+            </a>
+        {% endif %}
+        {% if messenger != 'viber' %}
+            <a href="{% url 'bots-management:subscribers:subscriber-messages' slug 'viber' %}" class="btn btn-sm btn-secondary">
+                Тільки viber
+            </a>
+        {% endif %}
+        {% if messenger != 'telegram' %}
+            <a href="{% url 'bots-management:subscribers:subscriber-messages' slug 'telegram' %}" class="btn btn-sm btn-secondary">
+                Тільки telegram
+            </a>
+        {% endif %}
+    </div>
+    <table class="text-center" width="100%" cellspacing="4" cellpadding="2"
+           border="1">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>ID</th>
+            <th>Автор</th>
+            <th>Текст</th>
+            <th>Дата создания</th>
+            <th>URL файла</th>
+            <th>Локация</th>
+            <th>Изображение</th>
+            <th>Файл</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for message in messages %}
+            <tr>
+                <th>{{ forloop.counter }}</th>
+                <td><small>{{ message.message_token }}</small></td>
+                <td>{{ message.sender }} </td>
+                <td width="200">
+                    <div>{{ message.text }}</div>
+                </td>
+                <td> {{ message.created|date:"d.m.y H:i" }}</td>
+                <td>
+                    {% if message.url %}
+                        <a href="{{ message.url }}">Тыц</a>
+                    {% endif %}
+                </td>
+                <td width="100">
+                    <div>{{ message.location }}</div>
+                </td>
+                <td>
+                    {% if message.image %}
+                        <img src="{{ message.image.url }}" height="150px"
+                             alt="">
+                    {% else %}
+                        <p>---</p>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if message.file %}
+                        <a href="{{ message.file.url }}">є</a>
+                    {% else %}
+                        <p>----</p>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include "paginator.html" with object_list=page_obj %}
+{% endblock content %}

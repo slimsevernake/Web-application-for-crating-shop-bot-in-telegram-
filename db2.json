@@ -1,0 +1,205 @@
+[
+  {
+    "model": "bots_management.channel",
+    "pk": 1,
+    "fields": {
+      "name": "Дій проти насильства",
+      "slug": "diy-proti-nasiltva"
+    }
+  },
+  {
+    "model": "bots_management.bot",
+    "pk": 1,
+    "fields": {
+      "channel": 1,
+      "messenger": "telegram",
+      "token": "1386852527:AAFKAvRLRR4IJ8hIvX_i4EfcDVitHzUQPvE"
+    }
+  },
+  {
+    "model": "bots_management.bot",
+    "pk": 2,
+    "fields": {
+      "channel": 1,
+      "messenger": "viber",
+      "token": "4c1ddb690267d005-a436b0c32aefe5a6-253ccb2b34e18158"
+    }
+  },
+  {
+    "model": "keyboards.keyboard",
+    "pk": 1,
+    "fields": {
+      "name": "home_keyboard",
+      "channel": 1,
+      "description": null
+    }
+  },
+  {
+    "model": "keyboards.keyboard",
+    "pk": 2,
+    "fields": {
+      "name": "1v_keyboard",
+      "channel": 1,
+      "description": null
+    }
+  },
+  {
+    "model": "keyboards.keyboard",
+    "pk": 3,
+    "fields": {
+      "name": "2v_keyboard",
+      "channel": 1,
+      "description": null
+    }
+  },
+  {
+    "model": "keyboards.action",
+    "pk": 1,
+    "fields": {
+      "name": "go_home_action",
+      "text": "Ви дісталися додому",
+      "keyboard_to_represent": 1,
+      "action_type": "text",
+      "picture": null,
+      "video": null,
+      "url": null,
+      "file": null,
+      "location_latitude": null,
+      "location_longitude": null,
+      "sticker_id": null,
+      "is_menu_action": true
+    }
+  },
+  {
+    "model": "keyboards.action",
+    "pk": 2,
+    "fields": {
+      "name": "choose_1",
+      "text": "Ви вибрали варіант 1. Це правильна відповідь \uD83C\uDF89 \uD83C\uDF89 \uD83C\uDF89",
+      "keyboard_to_represent": 2,
+      "action_type": "text",
+      "picture": null,
+      "video": null,
+      "url": null,
+      "file": null,
+      "location_latitude": null,
+      "location_longitude": null,
+      "sticker_id": null,
+      "is_menu_action": false
+    }
+  },
+  {
+    "model": "keyboards.action",
+    "pk": 3,
+    "fields": {
+      "name": "choose_2",
+      "text": "Ви вибрали варіант 2. На жаль, це неправильно \uD83D\uDE2D \uD83D\uDE2D \uD83D\uDE2D",
+      "keyboard_to_represent": 3,
+      "action_type": "text",
+      "picture": null,
+      "video": null,
+      "url": null,
+      "file": null,
+      "location_latitude": null,
+      "location_longitude": null,
+      "sticker_id": null,
+      "is_menu_action": false
+    }
+  },
+  {
+    "model": "keyboards.action",
+    "pk": 4,
+    "fields": {
+      "name": "get_cookie",
+      "text": "\uD83C\uDF6A \uD83C\uDF6A \uD83C\uDF6A",
+      "keyboard_to_represent": 2,
+      "action_type": "text",
+      "picture": null,
+      "video": null,
+      "url": null,
+      "file": null,
+      "location_latitude": null,
+      "location_longitude": null,
+      "sticker_id": null,
+      "is_menu_action": false
+    }
+  },
+  {
+    "model": "keyboards.button",
+    "pk": 1,
+    "fields": {
+      "keyboard": 1,
+      "action": 2,
+      "name": "choose1_btn",
+      "text": "Вибрати варіант 1",
+      "height": 1,
+      "width": 3,
+      "position": 1
+    }
+  },
+  {
+    "model": "keyboards.button",
+    "pk": 2,
+    "fields": {
+      "keyboard": 1,
+      "action": 3,
+      "name": "choose2_btn",
+      "text": "Вибрати варіант 2",
+      "height": 1,
+      "width": 3,
+      "position": 2
+    }
+  },
+  {
+    "model": "keyboards.button",
+    "pk": 3,
+    "fields": {
+      "keyboard": 1,
+      "action": 1,
+      "name": "go_home_btn",
+      "text": "Повернутися додому",
+      "height": 1,
+      "width": 6,
+      "position": 3
+    }
+  },
+  {
+    "model": "keyboards.button",
+    "pk": 4,
+    "fields": {
+      "keyboard": 2,
+      "action": 1,
+      "name": "go_home_btn",
+      "text": "Повернутися додому",
+      "height": 1,
+      "width": 6,
+      "position": 2
+    }
+  },
+  {
+    "model": "keyboards.button",
+    "pk": 5,
+    "fields": {
+      "keyboard": 3,
+      "action": 1,
+      "name": "go_home_btn",
+      "text": "Повернутися додому",
+      "height": 1,
+      "width": 6,
+      "position": 1
+    }
+  },
+  {
+    "model": "keyboards.button",
+    "pk": 6,
+    "fields": {
+      "keyboard": 2,
+      "action": 4,
+      "name": "get_cookie_btn",
+      "text": "Отримати подарунок \uD83C\uDF81",
+      "height": 1,
+      "width": 6,
+      "position": 1
+    }
+  }
+]

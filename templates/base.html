@@ -1,0 +1,54 @@
+<!doctype html>
+{% load static %}
+
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <!--  favicon  -->
+            <link rel="shortcut icon" type="image/png" sizes="32x32"  href="{% static 'favicon.png' %}">
+
+        <title>{% block title %} {% endblock title %}</title>
+        {% block style %} {% endblock style %}
+
+
+        <!--    user status bar-->
+    </head>
+    <body>
+        <div class="container-fluid bg-light pt-3 pb-3">
+            <div class="row ">
+                    <div class="col-sm-6">
+                {% block links %}  {% endblock %}
+                    </div>
+                     <div class="col-sm-6">
+                         {% if user.is_authenticated %}
+                         <a href="{% url 'moderators:user-profile' %}" class="btn btn-sm btn-light">
+                             <strong>
+                                Доброго дня, {{user.username}}
+                             </strong>
+                                &#10002;Редагувати профіль
+                         </a>
+                         <a href="{% url 'moderators:logout' %}" class="btn btn-sm btn-light">&#128682;Вийти</a>
+                         {% else %}
+                            <a href="{% url 'moderators:login' %}" class="btn btn-sm btn-light">Сторінка входу</a>
+                         {% endif %}
+                     </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            {% block content %} {% endblock content %}
+        </div>
+
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        {% block scripts %} {% endblock scripts %}
+    </body>
+</html>

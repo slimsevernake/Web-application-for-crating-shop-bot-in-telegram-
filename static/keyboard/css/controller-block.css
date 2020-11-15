@@ -1,0 +1,80 @@
+.control-block__constructor {
+    width: 100%; 
+    padding: 0px;
+}
+
+#tab-viber,
+#tab-telegram { 
+    display: none; 
+}
+
+.control-block__tab-block {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    display: none;
+    padding: 25px 15px;
+}
+
+.control-block__tabs {
+    display: inline-block;
+    padding: 7px;
+    margin: 0 -5px -1px 0;
+    text-align: center;
+    color: #696969;
+    background: #ebebeb;
+    cursor: pointer;
+    width: 50%;
+}
+
+#tab-viber:checked ~ .control-block .viber-cons,
+#tab-telegram:checked ~ .control-block .telegram-cons {
+    color: #696969;
+    background: #fafafa;
+}
+
+#tab-viber:checked ~ .control-block #viber-content,
+#tab-telegram:checked ~ .control-block #telegram-content { 
+    display: flex; 
+}
+
+.control-block__inputs {
+    font-size: 15px;
+    padding: 5px 10px;
+    height: 35px;
+    vertical-align: middle;
+    color: #636363;
+    font-size: 16px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid #ababab;
+    width: 47%;
+    margin-bottom: 6px;
+}
+
+.control-block__labels {
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    height: 35px;
+    width: 52%;
+    color: #636363;
+    margin-bottom: 6px;
+}
+
+#k-description {
+    width: 80%;
+    resize: none;
+    height: 70px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
+}
+
+#k-background {
+    /* width: 9%; */
+    height: 10px;
+    width: 10px;
+    position: absolute;
+}

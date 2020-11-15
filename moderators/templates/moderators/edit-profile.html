@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Редагування профілю{% endblock %}
+
+{% block content %}
+    <div class="row d-flex justify-content-center">
+        <form method="POST" class="d-flex w-25 flex-column bg-dark p-3 m-2" id="form">
+            {% csrf_token %}
+            <h2 class="display-5 text-center text-light ">Редагування профілю</h2>
+            {% for field in form %}
+                {% if not field.is_hidden %}
+                        <div class="form-group">
+                        <label for="{{ field.auto_id }}" class="text-light">{{ field.label_tag }} </label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="text-danger"> {{ field.errors }} </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <button type="submit" class="btn btn-light w-50 align-self-center">Зберегти</button>
+            <hr style="border-top: 1px solid honeydew; width: 100%">
+            <div class="d-flex">
+                {# Profile of the moderator #}
+                <a type="button" class="btn btn-light w-50 align-self-center mr-1"
+                   href="{% url "moderators:user-profile" %}">
+                    Профіль
+                </a>
+                {# Change password #}
+                <a type="button" class="btn btn-light w-50 align-self-center"
+                   href="{% url "moderators:user-change-password" %}">
+                    Змінити пароль
+                </a>
+            </div>
+            <hr style="border-top: 1px solid honeydew; width: 100%">
+            {# Logout #}
+            <a type="button" class="btn btn-danger w-50 align-self-center"
+               href="{% url "moderators:logout" %}">
+                Вийти з аккаунту
+            </a>
+        </form>
+    </div>
+{% endblock %}

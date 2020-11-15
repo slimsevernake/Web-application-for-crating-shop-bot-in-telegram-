@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+    bot_db:
+      image: postgres
+      restart: always
+      env_file:
+        - .env
+      ports:
+        - 5431:5432
+
+    web:
+     build: ..
+     restart: always
+     command: python command.py deploy
+     volumes:
+       - .:/code
+     ports:
+       - 8001:8001
+     depends_on:
+       - bot_db

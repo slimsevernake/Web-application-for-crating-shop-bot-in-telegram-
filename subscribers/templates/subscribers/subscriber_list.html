@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %} Підписники каналу {{ channel.name }} {% endblock title %}
+
+{% block links %}
+    <a href="{% url 'bots-management:channel-list' %}"
+       class="text-dark text-decoration-none">
+        Канали
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:channel-detail' channel.slug %}"
+       class="text-dark text-decoration-none">
+        {{ channel.name }}
+    </a><span class="text-muted">/ Користувачі</span>
+{% endblock %}
+{% block content %}
+
+<div class="row justify-content-md-center">
+    <div class="col-md-auto">
+        <form action="" method="post"> {% csrf_token %}
+            {{form.messenger}} {{form.status}}
+            <input type="submit" class="btn btn-secondary btn-sm" value="Показати">
+        </form>
+    </div>
+<table class="table">
+    <thead>
+        <tr>
+            <td>#</td>
+            <td>Им'я</td>
+            <td>Канал</td>
+            <td>Юзер ID</td>
+            <td>Примітка</td>
+            <td>Аватар</td>
+            <td>Активний</td>
+            <td>Дата підписки</td>
+            <td>Остання дата активності</td>
+        </tr>
+    </thead>
+    <tbody>
+    {% for subscriber in subscribers %}
+        <tr>
+            <td>{{forloop.counter }}</td>
+            <td><a href="{% url 'bots-management:subscribers:subscriber-update' channel.slug subscriber.id  %}" title="Редагувати">{{subscriber.name}}</a></td>
+            <td>{{subscriber.messengers_bot}}</td>
+            <td>{{subscriber.user_id}}</td>
+            <td>{{subscriber.info}}</td>
+            <td>
+                {% if subscriber.avatar %}
+                    <img src="{{subscriber.avatar}}" width="100px" alt="">
+                {% endif %}
+            </td>
+            <td>{{subscriber.is_active}} </td>
+            <td>{{subscriber.created}} </td>
+            <td>{{subscriber.updated}} </td>
+
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+</div>
+{% endblock content %}
+
+
+{% block scripts %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+    </script>
+{% endblock scripts %}

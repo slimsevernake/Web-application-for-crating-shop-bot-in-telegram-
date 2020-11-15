@@ -1,0 +1,112 @@
+#modal-controller {
+    display: none;
+}
+
+#modal-controller:checked ~ .modal {
+	visibility: visible;
+    opacity: 1;
+    overflow: hidden;
+    position: fixed;
+}
+
+.modal {
+	position: fixed;
+	visibility: hidden;
+	top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+	background-color: rgba(0, 0, 0,0.2);
+	opacity: 0;
+	transition: all 0.6s;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal__box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.4), 0 10px 10px rgba(0, 0, 0, 0.4);
+    position: absolute;
+    width: 800px;
+    border-radius: 5px;
+    background: #ffffff;
+}
+
+.modal__title {
+    text-align: center;
+    padding: 10px;
+    font-size: 24px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.modal__field {
+    padding: 10px;
+    font-size: 0.875em;
+    font-weight: 900;
+    font-weight: 300;
+    margin: 10px;
+    border: 1px solid;
+    border-color: rgba(0, 0, 0, 0.2);
+    color: black;
+}
+
+.modal__field[type='checkbox'] {
+    justify-self: center;
+}
+
+.modal__field[name='description'] {
+    resize: none;
+    font-size: 14px;
+    height: 65px;
+    font-family: inherit;
+}
+
+/*#636363;*/
+.modal__label {
+    color: #636363;
+    font-size: 15px;
+}
+
+.channel_update {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+}
+
+.modal__panel {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 15px;
+}
+  
+.modal__main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 20px;
+}
+
+.modal__close-button {
+    padding: 5px 10px;
+    margin-left: 15px;
+    border-color: rgba(94, 66, 162, 0.2);
+    color: #5e42a2;
+}
+
+.modal__close-button:hover {
+    border-color: #5e42a2;
+    background: rgba(94, 66, 162, 0.2);
+}
+

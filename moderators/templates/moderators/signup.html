@@ -1,0 +1,42 @@
+{% extends "base_new.html" %}
+{% load static %}
+{% block title %}Авторизація{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href='{% static "/css/login.css" %}' >
+    <div class="container">
+        <form method="POST" class="main-form" id="form">            {% csrf_token %}
+            <h2 class="display-5 text-center text-light">Зареєстуватися</h2>
+            <br><br>
+            <div class="main-form__group">
+                    {# TODO: add style to errors message #}
+                    {% if form.username.errors%}
+                        {% for error in form.username.errors %}
+                                <div class="text-danger"> {{ error }} </div>
+
+                        {% endfor %}
+                    {% endif %}
+                    {{form.username}}
+                    <span class="main-form__highlight"></span>
+                    <span class="main-form__bar"></span>
+                    <label class="main-form__label">Ім'я користувача</label>
+                </div>
+                <div class="main-form__group">
+                    {# TODO: add style to errors message #}
+                    {% if form.username.errors%}
+                        {% for error in form.email.errors %}
+                                <div class="text-danger "> {{ error }} </div>
+                        {% endfor %}
+                    {% endif %}
+                    {{form.email}}
+                    <span class="main-form__highlight"></span>
+                    <span class="main-form__bar"></span>
+                    <label class="main-form__label">Email</label>
+                </div>
+            <button type="submit" class="main-form__button">Зареєструватися</button>
+        </form>
+    </div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/login.js' %}"></script>
+{% endblock scripts %}

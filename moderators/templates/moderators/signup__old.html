@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Реєстрація модератора{% endblock %}
+
+{% block content %}
+    <div class="row d-flex justify-content-center">
+        <form method="POST" class="d-flex w-25 flex-column bg-dark p-3 m-2" id="form">
+            {% csrf_token %}
+            <h2 class="display-5 text-center text-light ">Зареєстуватися</h2>
+            {% for field in form %}
+                {% if not field.is_hidden %}
+                    <div class="form-group">
+                        <label for="{{ field.auto_id }}" class="text-light">{{ field.label_tag }} </label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="text-danger"> {{ field.errors }} </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <button type="submit" class="btn btn-light w-50">Зарєстуватися</button>
+        </form>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
+{% endblock scripts %}

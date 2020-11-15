@@ -1,0 +1,21 @@
+body {
+    background: #eee;
+    font-family: 'Open Sans', sans-serif;
+    letter-spacing: 1px;
+}
+
+.button {
+    padding: 15px 30px;
+    border: 1px solid;
+    border-radius: 30px;
+    cursor: pointer;
+    border-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    transition: all 1s;
+}
+
+.button:hover {
+    border: 1px solid;
+    border-color: white;
+    background: rgba(255, 255, 255, 0.2);
+}

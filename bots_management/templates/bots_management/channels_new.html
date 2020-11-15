@@ -1,0 +1,47 @@
+{% extends "base_new.html" %}
+{% block title %}Channels{% endblock title %}
+
+{% block content %}
+{% load static %}
+		<link href="{% static '/css/resources/select2.min.css' %}" rel="stylesheet"/>
+        <link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" >
+
+    <input id="modal-controller" type="checkbox"/>
+        <div class="modal" style="overflow-y: hidden;">
+			<div class="modal__box" style="height: auto;">
+				<div class="modal__title">
+					Редагувати канал
+				</div>
+				<div class="modal__main">
+					<form action="" class="channel_update">  {% csrf_token %}
+						<label for="i_id">id</label>
+                        <input class="modal__field" type="text" name="id" />  <!-- style="display: none;"-->
+						{% for field in form %}
+					        <label class="modal__label" for="i_{{ field.name }}">{{ field.label }}</label>
+					        {{ field }}
+					    {% endfor %}
+					</form>
+
+				</div>
+				<div class="modal__panel">
+					<label for="modal-controller" class="button modal__close-button button-send">Готово</label>
+					<label for="modal-controller" class="button modal__close-button">Відмінити</label>
+				</div>				
+			</div>
+        </div>
+
+        <div class="main">
+            <button class="main__add-button">Створити</button>
+        </div>
+
+{% endblock content %}
+
+{% block script %}
+{% load static %}
+        <script src="{% static '/js/resources/jquery-3.5.1.min.js' %}"></script>
+		<script src="{% static '/js/resources/select2.full.js' %}"></script>
+		<script src="{% static 'js/main.js' %}"></script>
+		<script src="{% static 'js/bots_management/CreatesChannel.js' %}"></script>
+		<script src="{% static 'js/bots_management/AJAX.js' %}"></script>
+{% endblock script %}

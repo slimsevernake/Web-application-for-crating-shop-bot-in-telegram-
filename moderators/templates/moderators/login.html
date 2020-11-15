@@ -1,0 +1,53 @@
+{% extends "base_new.html" %}
+{% load static %}
+{% block title %}Авторизація{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" type="text/css" href='{% static "/css/login.css" %}' >
+    <div class="container">
+        <form method="POST" class="main-form" id="form">
+            {% if next %}
+                {% if user.is_authenticated %}
+                    <div class="alert alert-warning" role="alert">
+                         У вас немає доступу до цієї сторінки.
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning" role="alert">
+                         Увійдіть до аккаунту, щоб перейти до цієї сторінки.
+                    </div>
+                {% endif %}
+            {% endif %}
+            {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                    Ваши логін і пароль не збігаються. Будь ласка, спробуйте ще раз.
+                </div>
+            {% endif %}
+
+
+            {% csrf_token %}
+                <div class="main-form__group">
+                    {{form.username}}
+                    <span class="main-form__highlight"></span>
+                    <span class="main-form__bar"></span>
+                    <label class="main-form__label">Ім'я користувача</label>
+                </div>
+                <div class="main-form__group">
+                    {{form.password}}
+                    <span class="main-form__highlight"></span>
+                    <span class="main-form__bar"></span>
+                    <label class="main-form__label">Пароль</label>
+                </div>
+                <abbr title="Для можливості відновлення паролю,
+               вкажіть ваш логін" data-toggle="tooltip" data-placement="bottom" data-animation="false">
+                <a href="#" class="main-form__restore-password main-form__restore-password--disable"  id="ajax-reset-password">Нагадати пароль?</a>
+                </abbr>
+                <button type="submit" class="main-form__button">Увійти</button>
+        </form>
+    </div>
+
+{% endblock %}
+{% block script %}
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
+    <script src="{% static 'js/moderators/ajax.js' %}"></script>
+    <script src="{% static 'js/login.js' %}"></script>
+{% endblock script %}

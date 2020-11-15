@@ -1,0 +1,188 @@
+* {
+    box-sizing:border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+.disabled {
+    cursor: default;
+    pointer-events: none;
+}
+
+input:focus,
+button:focus {
+    outline: 0;
+}
+
+body {
+    background: #eee;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/*
+ * Header
+ */
+
+.header {
+    text-align: center;
+    height: 100%;
+}
+
+.header__title {
+    color: #636363;
+    font-weight: 500;
+}
+
+.header__subtitle {
+    color: #4a89dc;
+    font-weight: 400;
+}
+
+/*
+ * Main
+ */
+
+.main-form {
+    width: 350px;
+	margin-top: 2em;
+	padding: 3em 2em 2em 2em;
+	background: #fafafa;
+	border: 1px solid #ebebeb;
+    box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,
+                rgba(0,0,0,0.09804) 0px 1px 2px 0px;
+}
+
+.main-form__group {
+	position: relative;
+	margin-bottom: 35px;
+}
+
+.main-form__field {
+	font-size: 18px;
+	padding: 10px 10px 10px 5px;
+	display: block;
+	background: #fafafa;
+    color: #636363;
+	width: 100%;
+	border: none;
+	border-radius: 0;
+	border-bottom: 1px solid #757575;
+}
+
+.main-form__label {
+    display: block;
+	color: #999;
+	font-size: 16px;
+	font-weight: normal;
+	position: absolute;
+	pointer-events: none;
+	right: 5px;
+	top: 10px;
+	transition: all 0.2s ease;
+}
+
+.main-form__field:focus ~ .main-form__label,
+.main-form__field.used ~ .main-form__label {
+	top: -20px;
+    font-size: 14px;
+	color: #4a89dc;
+}
+
+.main-form__bar {
+	position: relative;
+	display: block;
+	width: 100%;
+}
+
+.main-form__bar:before,
+.main-form__bar:after {
+	content: '';
+	height: 2px;
+	width: 0;
+	bottom: 1px;
+	position: absolute;
+	background: #4a89dc;
+	transition: all 0.2s ease;
+}
+
+.main-form__bar:before { left: 50%; }
+
+.main-form__bar:after { right: 50%; }
+
+.main-form__field:focus ~ .main-form__bar:before,
+.main-form__field:focus ~ .main-form__bar:after {
+    width: 50%;
+}
+
+.main-form__highlight {
+	position: absolute;
+	height: 60%;
+	width: 100px;
+	top: 25%;
+	left: 0;
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+.main-form__field:focus ~ .main-form__highlight {
+	animation: input-highlighter 0.3s ease;
+}
+
+.main-form__button {
+  padding: 12px 24px;
+  margin: 1em 0;
+  width: 100%;
+  vertical-align: middle;
+  color: #fff;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border: 0;
+  border-bottom: 2px solid #3160B6;
+  background: #4a89dc;
+  text-shadow: 1px 1px 0 rgba(39, 110, 204, .5);
+  transition: all 0.15s ease;
+}
+
+.main-form__button:hover {
+    background: #357bd8;
+}
+
+.main-form__restore-password {
+    display: block;
+    text-align: right;
+    font-size: 14px;
+    color: #4a89dc;
+}
+
+.main-form__restore-password--disable {
+    color: #999;
+    pointer-events: none;
+    cursor: default;
+}
+
+/*
+ * Animation
+ */
+
+@keyframes input-highlighter {
+	from {
+        background: #4a89dc;
+    }
+	to 	{
+        width: 0;
+        background: transparent;
+    }
+}

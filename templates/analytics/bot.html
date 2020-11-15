@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block links %}
+    <a href="{% url 'bots-management:channel-list' %}"
+       class="mt-3 mb-3 text-dark text-decoration-none">
+        Канали
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:channel-detail' channel.slug %}"
+       class="mt-3 mb-3 text-dark text-decoration-none">
+        {{ channel.name }}
+    </a><span class="text-muted">/</span>
+    <a href="{% url 'bots-management:analytics:general-analytics' channel.slug %}"
+       class="mt-3 mb-3 text-dark text-decoration-none">
+        Аналітика
+    </a><span class="text-muted">/ Окрема аналітика</span>
+{% endblock %}
+
+{% block content %}
+    <form method="GET">
+        <div class="row">
+            {% for field in form %}
+                {% if not field.is_hidden %}
+                    <div class="form-group col-2">
+                        <label for="{{ field.auto_id }}">{{ field.label_tag }}</label>
+                        {{ field }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <div class="form-group col-2 align-bottom">
+                <input type="submit" value="Пошук" class="btn btn-info mt-4">
+            </div>
+        </div>
+    </form>
+    <hr>
+    <div class="container">
+        <h3 class="text-center">
+            Аналітика з {{ date_from|date:"d.m.Y" }}
+            по {{ date_to|date:"d.m.Y" }}
+        </h3>
+        {% if not analytics_number and not analytics_efficiency %}
+        <hr>
+        <h2 class="text-center">
+            Ще нема жодного повідомлення за вказані дати для аналітики
+        </h2>
+        {% else %}
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Текст повідомлення</th>
+                {% if analytics_number %}
+                    <th scope="col">Кількість</th>
+                {% elif analytics_efficiency %}
+                    <th scope="col">Ефективність</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in analytics_number %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ row.text }}</td>
+                    <td>{{ row.num_msgs }}</td>
+                </tr>
+            {% endfor %}
+            {% for row in analytics_efficiency %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ row.text }}</td>
+                    <td>{{ row.efficiency }}%</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
