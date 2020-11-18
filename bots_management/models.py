@@ -21,7 +21,7 @@ class Bot(models.Model):
         get_user_model(), blank=True, verbose_name="Власник", on_delete=models.CASCADE
     )
     moderators = models.ManyToManyField(
-        get_user_model(), blank=True, null=True, verbose_name="Модератори", related_name="bots"
+        get_user_model(), blank=True, verbose_name="Модератори", related_name="bots"
     )
 
     is_media_allowed = models.BooleanField(

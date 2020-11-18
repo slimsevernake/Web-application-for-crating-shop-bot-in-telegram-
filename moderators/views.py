@@ -39,29 +39,29 @@ class ModeratorRegisterView(CreateView):
     template_name = "moderators/signup.html"
     form_class = ModeratorRegisterForm
 
-    def form_valid(self, form):
-        """
-            Set password to form field
-            and send mail with the new user`s password
-        """
-        password: str = generate_password()
-        form.cleaned_data['password'] = password
-
-        context: dict = {
-            "password": password,
-            "login_link": self.request.build_absolute_uri(
-                reverse('moderators:login')
-            ),
-        }
-        send_email(
-            email=form.cleaned_data['email'],
-            subject="Реєстрація",
-            html_message=render_to_string(
-                template_name="moderators/email-register.html",
-                context=context
-            ),
-        )
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     """
+    #         Set password to form field
+    #         and send mail with the new user`s password
+    #     """
+    #     password: str = generate_password()
+    #     form.cleaned_data['password'] = password
+    #
+    #     context: dict = {
+    #         "password": password,
+    #         "login_link": self.request.build_absolute_uri(
+    #             reverse('moderators:login')
+    #         ),
+    #     }
+    #     send_email(
+    #         email=form.cleaned_data['email'],
+    #         subject="Реєстрація",
+    #         html_message=render_to_string(
+    #             template_name="moderators/email-register.html",
+    #             context=context
+    #         ),
+    #     )
+    #     return super().form_valid(form)
 
     def get_success_url(self) -> str:
         return reverse_lazy('moderators:login')
@@ -145,9 +145,8 @@ class ModeratorProfileView(LoginRequiredMixin, DetailView):
 def reset_password_ajax(
         request: HttpRequest) -> Union[HttpResponse, JsonResponse]:
     """
-        Reset password using ajax-request
+    Reset password using ajax-request
     """
-
     if request.is_ajax() and request.method == "POST":
         username = request.POST.get('username')
 

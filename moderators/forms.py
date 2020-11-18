@@ -1,35 +1,45 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import forms as auth_forms
 
 
-class ModeratorRegisterForm(forms.ModelForm):
+class ModeratorRegisterForm(UserCreationForm):
+    first_name = forms.CharField(
+        max_length=30,
+        required=False,
+        label="Ім'я",
+        # widget=forms.TextInput(attrs={'class': 'main-form__field'})
+        widget = forms.TextInput(attrs={'class': 'form-control'})
+    )
+    last_name = forms.CharField(
+        max_length=30,
+        required=False,
+        label='Прізвище',
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
     username = forms.CharField(
         label='Логін',
-        widget=forms.TextInput(attrs={'class': 'main-form__field'})
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     email = forms.EmailField(
         label='Поштова адреса',
-        widget=forms.TextInput(attrs={'class': 'main-form__field'})
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
-    password = forms.CharField(
+    password1 = forms.CharField(
+        label="Пароль",
         required=False,
-        widget=forms.HiddenInput()
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
+    password2 = forms.CharField(
+        label="Підтвердження паролю",
+        required=False,
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
-
-    def save(self, commit=True, *args, **kwargs):
-        """"
-            Set password to user object
-        """
-        obj = super().save(commit=False, *args, **kwargs)
-        obj.set_password(self.cleaned_data['password'])
-        if commit:
-            obj.save()
-        return obj
+        fields = ('username', 'email', "first_name", "last_name", 'password1', 'password2')
 
 
 class ModeratorLoginForm(auth_forms.AuthenticationForm):
@@ -38,12 +48,14 @@ class ModeratorLoginForm(auth_forms.AuthenticationForm):
     """
     username = forms.CharField(
         label='Логін',
-        widget=forms.TextInput(attrs={'class': 'main-form__field',
+        # widget=forms.TextInput(attrs={'class': 'main-form__field',
+        #                               'autocomplete': "off"})
+        widget=forms.TextInput(attrs={'class': 'form-control',
                                       'autocomplete': "off"})
     )
     password = forms.CharField(
         label='Пароль',
-        widget=forms.PasswordInput(attrs={'class': 'main-form__field',
+        widget=forms.PasswordInput(attrs={'class': 'form-control',
                                           'autocomplete': "off"})
     )
 

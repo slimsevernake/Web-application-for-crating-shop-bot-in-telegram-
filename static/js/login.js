@@ -2,7 +2,7 @@ window.addEventListener('load', function() {
     let inputs = document.querySelectorAll('.main-form__field');
     let restorePassword = document.querySelector('.main-form__restore-password');
     let login = document.querySelector('.main-form__field[name="username"]');
-    let button = document.querySelector('.main-form__button');
+    let button = document.querySelector('#signup');
     
     changeInputView();
 

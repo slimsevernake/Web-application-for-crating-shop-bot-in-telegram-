@@ -1,11 +1,10 @@
-{% extends "base_new.html" %}
+{% extends "base.html" %}
 {% load static %}
-{% block title %}Авторизація{% endblock %}
+{% block title %}Авторизація модератора{% endblock %}
 
 {% block content %}
-    <link rel="stylesheet" type="text/css" href='{% static "/css/login.css" %}' >
-    <div class="container">
-        <form method="POST" class="main-form" id="form">
+    <div class="row d-flex justify-content-center">
+        <form method="POST" class="d-flex w-25 flex-column bg-dark p-3 m-2" id="form">
             {% if next %}
                 {% if user.is_authenticated %}
                     <div class="alert alert-warning" role="alert">
@@ -17,37 +16,29 @@
                     </div>
                 {% endif %}
             {% endif %}
+            {% csrf_token %}
+            <h2 class="display-5 text-center text-light ">Вхід до акаунту</h2>
             {% if form.errors %}
                 <div class="alert alert-danger" role="alert">
                     Ваши логін і пароль не збігаються. Будь ласка, спробуйте ще раз.
                 </div>
             {% endif %}
+            {% for field in form %}
+                {% if not field.is_hidden %}
+                    <div class="form-group">
+                        <label for="{{ field.auto_id }}" class="text-light">{{ field.label_tag }} </label>
+                        {{ field }}
+                    </div>
+                {% endif %}
+            {% endfor %}
 
-
-            {% csrf_token %}
-                <div class="main-form__group">
-                    {{form.username}}
-                    <span class="main-form__highlight"></span>
-                    <span class="main-form__bar"></span>
-                    <label class="main-form__label">Ім'я користувача</label>
-                </div>
-                <div class="main-form__group">
-                    {{form.password}}
-                    <span class="main-form__highlight"></span>
-                    <span class="main-form__bar"></span>
-                    <label class="main-form__label">Пароль</label>
-                </div>
-                <abbr title="Для можливості відновлення паролю,
-               вкажіть ваш логін" data-toggle="tooltip" data-placement="bottom" data-animation="false">
-                <a href="#" class="main-form__restore-password main-form__restore-password--disable"  id="ajax-reset-password">Нагадати пароль?</a>
-                </abbr>
-                <button type="submit" class="main-form__button">Увійти</button>
+            <a href="#" class="text-link" id="ajax-reset-password">Забули пароль?</a>
+            <a href="{% url "moderators:signup" %}" class="text-link" id="signup">Немає акаунту?</a>
+            <button type="submit" class="btn btn-light w-50 mt-3">Увійти</button>
         </form>
     </div>
-
 {% endblock %}
-{% block script %}
+{% block scripts %}
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
     <script src="{% static 'js/moderators/ajax.js' %}"></script>
-    <script src="{% static 'js/login.js' %}"></script>
-{% endblock script %}
+{% endblock scripts %}
