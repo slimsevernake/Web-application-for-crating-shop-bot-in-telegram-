@@ -3,6 +3,10 @@ from django.db import models
 from django.urls import reverse
 
 
+def make_post_upload_path(instance: 'Post', filename: str) -> str:
+    return f'mailings/{instance.bot.name}/{filename}'
+
+
 class Post(models.Model):
     """
     Model for representing Post for mailing.
@@ -21,34 +25,38 @@ class Post(models.Model):
         default=None,
         null=True
     )
+    image = models.ImageField(
+        "Картинка",
+        upload_to=make_post_upload_path,
+        blank=True, null=True
+    )
+    file = models.FileField(
+        "Файл",
+        upload_to=make_post_upload_path,
+        blank=True, null=True
+    )
+    url = models.URLField("Ссылка", blank=True, null=True, max_length=700)
 
     created_at = models.DateTimeField(
-        verbose_name="Час створення",
+        verbose_name="Время создания",
         auto_now_add=True,
     )
 
-    actions = models.ManyToManyField(
-        to="keyboards.Action",
-        verbose_name="Дії",
-        related_name="posts",
-    )
-
     send_time = models.DateTimeField(
-        verbose_name="Час відправки",
+        verbose_name="Время отправки",
         null=True,
         blank=True
     )
 
     is_done = models.BooleanField(
-        verbose_name="Відправлення здійснене?",
+        verbose_name="Отправка совершена?",
         default=False,
     )
 
     class Meta:
-        verbose_name = "Публікація"
-        verbose_name_plural = "Публікації"
+        verbose_name = "Публикация"
+        verbose_name_plural = "Публикации"
         db_table = "Posts"
-
 
     def __str__(self) -> str:
         return f"Post {self.id}"
@@ -78,28 +86,19 @@ class SentMessage(models.Model):
     Only for Telegram messages.
     TODO:change and maybe rename model in future
     """
-    chat_id = models.CharField("ID чату", max_length=255)
-    message_id = models.IntegerField("ID повідомлення")
+    chat_id = models.CharField("ID чата", max_length=255)
+    message_id = models.IntegerField("ID сообщения")
     post = models.ForeignKey(
         to=Post,
         on_delete=models.CASCADE,
         related_name="sent_messages",
-        verbose_name="Пост, який відноситься до відправленного повідомлення"
+        verbose_name="Пост, который относится к уникальному идентификатору на телеграмм сервере"
     )
-    # TODO: still think about this possibility
-    # TODO: it will be used in updating messages
-    # action = models.ForeignKey(
-    #     to="keyboards.Action",
-    #     on_delete=models.CASCADE,
-    #     verbose_name="Дія, яка відноситься до відправленного повідомлення",
-    #     related_name="sent_posts"
-    # )
 
     class Meta:
-        verbose_name = "Повідомлення відправленої публікації"
-        verbose_name_plural = "Повідомлення відправленої публікації"
+        verbose_name = "Уникальный идентификатор отправленного сообщения на сервере телеграмма."
+        verbose_name_plural = "Уникальные идентификаторы отправленных сообщений на сервере телеграмма."
         db_table = "SentMessages"
-
 
     def __str__(self) -> str:
         return f"Sent message {self.message_id} to {self.chat_id}"

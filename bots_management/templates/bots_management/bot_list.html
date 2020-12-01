@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %} Список всех каналов {% endblock title %}
+
+{% block links %}
+    <span class="text-muted">Боты</span>
+{% endblock %}
+
+{% block content %}
+    <table class="table table-striped table-dark">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Название бота</th>
+            <th scope="col">Ссылка</th>
+            <th scope="col">Telegram-token</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if bots %}
+            <h3> Сообственные боты </h3>
+            {% for bot in bots %}
+                <tr>
+                    <th scope="row"> {{ forloop.counter }}</th>
+                    <td><a href="{{ bot.get_absolute_url }}">{{ bot.name }}</a></td>
+                    <td>{{ bot.slug }}</td>
+                    <td> {{ bot.telegram_token|truncatechars:18 }}</td>
+                </tr>
+            {% endfor %}
+        {% elif bots_to_management %}
+            <h1> Боты для модерирования </h1>
+            {% for bot in bots_to_management %}
+                <tr>
+                    <th scope="row"> {{ forloop.counter }}</th>
+                    <td><a href="{{ bot.get_absolute_url }}">{{ bot.name }}</a></td>
+                    <td>{{ bot.slug }}</td>
+                    <td> {{ bot.telegram_token|truncatechars:18 }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <p> У вас пока что нет доступных потом:( </p>
+        {% endif %}
+        </tbody>
+    </table>
+    <a href="{% url 'bots-management:bot-create' %}" class="btn btn-dark">Добавить бота</a>
+
+{% endblock content %}

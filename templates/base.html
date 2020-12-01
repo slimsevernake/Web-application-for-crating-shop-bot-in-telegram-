@@ -11,7 +11,7 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <!--  favicon  -->
-            <link rel="shortcut icon" type="image/png" sizes="32x32"  href="{% static 'favicon.png' %}">
+            <link rel="shortcut icon" type="image/png" sizes="32x32"  href="{% static 'favicon.ico' %}">
 
         <title>{% block title %} {% endblock title %}</title>
         {% block style %} {% endblock style %}
@@ -29,13 +29,13 @@
                          {% if user.is_authenticated %}
                          <a href="{% url 'moderators:user-profile' %}" class="btn btn-sm btn-light">
                              <strong>
-                                Доброго дня, {{user.username}}
+                                Здравствуйте, {{user.username}}
                              </strong>
-                                &#10002;Редагувати профіль
+                                &#10002;Редактировать профиль
                          </a>
-                         <a href="{% url 'moderators:logout' %}" class="btn btn-sm btn-light">&#128682;Вийти</a>
+                         <a href="{% url 'moderators:logout' %}" class="btn btn-sm btn-light">&#128682;Выйти</a>
                          {% else %}
-                            <a href="{% url 'moderators:login' %}" class="btn btn-sm btn-light">Сторінка входу</a>
+                            <a href="{% url 'moderators:login' %}" class="btn btn-sm btn-light">Страница входа</a>
                          {% endif %}
                      </div>
             </div>

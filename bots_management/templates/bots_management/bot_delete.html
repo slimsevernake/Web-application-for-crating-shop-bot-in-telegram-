@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title%} Удаление {% endblock %}
+
+{% block links %}
+    <a href="{% url 'bots-management:bot-list' %}"
+       class="mt-3 mb-3 text-dark text-decoration-none">
+        оы
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:bot-detail' object.slug %}"
+       class="mt-3 mb-3 text-dark text-decoration-none">
+        {{ object.name }}
+    </a><span class="text-muted">/ Удаление</span>
+{% endblock %}
+
+{% block content %}
+        <a href="{% url 'bots-management:bot-detail' object.slug %}"
+           class="btn btn-info active mt-3 mb-3">
+            &#8592 Назад
+        </a>
+       <form method="post">{% csrf_token %}
+		    <p>Вы действительно желаете удалить бота "{{ object.name }}"?</p>
+		    <input type="submit" class="btn btn-danger" value="Подтвердить">
+            <a class="btn btn-info" href="{% url 'bots-management:bot-detail' object.slug %}">Отменить</a>
+		</form>
+
+{% endblock %}

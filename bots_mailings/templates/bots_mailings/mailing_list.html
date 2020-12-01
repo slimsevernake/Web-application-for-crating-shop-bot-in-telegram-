@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %} Список розсилок {% endblock %}
+{% block title %} Список рассылок {% endblock %}
 
 {% block links %}
     <a href="{% url 'bots-management:channel-list' %}"
        class="text-dark text-decoration-none">
-        Канали
+        Каналы
     </a><span class="text-dark">/</span>
     <a href="{% url 'bots-management:channel-detail' channel.slug %}"
        class="text-dark text-decoration-none">
@@ -13,26 +13,26 @@
     </a><span class="text-muted">/</span>
     <a href="{% url 'bots-management:mailings:mailing-list' channel.slug %}"
        class="text-dark text-decoration-none">
-        Розсилки
+        Рассылки
     </a>
 {% endblock %}
 
 {% block content %}
 
     {% if mailings %}
-        <h3> Cписок розсилок каналу
+        <h3> Список рассылок
             <a href="{{ mailings.first.channel.get_full_detail_url }}">
                 {{ mailings.first.channel.name }}
             </a>
         </h3>
         <div class="mt-3 md-3">
-            <a href="{% url "bots-management:mailings:mailing-create" channel.slug %}" class="btn btn-primary">Додати розсилку</a>
+            <a href="{% url "bots-management:mailings:mailing-create" channel.slug %}" class="btn btn-primary">Добавить розссылку</a>
         </div>
         {% for mailing in mailings %}
             <div class="card mt-3 bg-dark text-white">
                 <div class="card-header">
                     <h3>
-                        Розсилка # {{ forloop.counter }}
+                        Рассылка # {{ forloop.counter }}
                     </h3>
                 </div>
                 <div class="card-body">
@@ -42,19 +42,19 @@
                             <li> <a href="{{action.get_absolute_url}}">{{ action.name }}</a> </li>
                         {% endfor %}
                     </ul>
-                    <p class="card-text">Була створенний: {{ mailing.created_at }}</p>
+                    <p class="card-text">Дата создание: {{ mailing.created_at }}</p>
                     {% if mailing.send_time %}
-                        <p class="card-text">Запланований час відправки: {{ mailing.send_time }}</p>
+                        <p class="card-text">Запланированное время отправки: {{ mailing.send_time }}</p>
                     {% endif %}
                     {% if mailing.send_to.all %}
-                        <h6 class="card-text">Відправка користувачам:</h6>
+                        <h6 class="card-text">Отправка пользователям:</h6>
                         <ul>
                         {% for user in mailing.send_to.all %}
                             <li class="card-text">{{user.name }}</li>
                         {% endfor %}
                         </ul>
                     {% else %}
-                        <p class="card-text">Відправка усім користувачам</p>
+                        <p class="card-text">Всем</p>
                     {% endif %}
                     <p class="card-text">Доставлено:
                     {% if mailing.is_done %}
@@ -63,17 +63,17 @@
                         &#10060;
                     {% endif %}
                     </p>
-                    <a href="{{ mailing.get_absolute_url }}" class="btn btn-primary">Детальніше</a>
+                    <a href="{{ mailing.get_absolute_url }}" class="btn btn-primary">Детальнее</a>
                     {% if not mailing.is_done %}
-                        <a href="{{ mailing.get_update_url }}" class="btn btn-warning">Редагувати</a>
+                        <a href="{{ mailing.get_update_url }}" class="btn btn-warning">Редактировать</a>
                     {% endif %}
-                    <a href="{{ mailing.get_delete_url }}" class="btn btn-danger">Видалити</a>
+                    <a href="{{ mailing.get_delete_url }}" class="btn btn-danger">Удалить</a>
                 </div>
             </div>
         {% endfor %}
     {% else %}
         <div class="mt-3 md-3">
-            <a href="{% url "bots-management:mailings:mailing-create" channel.slug %}" class="btn btn-primary">Створити розсилку</a>
+            <a href="{% url "bots-management:mailings:mailing-create" channel.slug %}" class="btn btn-primary">Создать рассылку</a>
         </div>
     {% endif %}
 

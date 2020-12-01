@@ -18,6 +18,13 @@ def get_bot_by_slug(slug: str) -> Union[Bot, None]:
 
 def get_all_available_bots_to_moderator(user: User) -> QuerySet:
     """
+    Returns all available bots to moderator.
+    """
+    return user.bots_to_management.all()
+
+
+def get_all_users_bots(user: User) -> QuerySet:
+    """
     Returns all available channels to moderator.
     """
     return user.bots.all()

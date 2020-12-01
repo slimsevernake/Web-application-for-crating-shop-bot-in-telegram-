@@ -1,33 +1,24 @@
 from django import forms
 from django.utils import timezone
 
-from .models import HelpReply
+from .models import Reply
 from bots_management.models import Bot
 
 
 class ReplyHelpMessageForm(forms.ModelForm):
-    actions = forms.ModelMultipleChoiceField(
-        queryset=None, label="Події, які надіслати",
-        widget=forms.SelectMultiple(
-            attrs={'class': "form-control"}
-        )
-    )
+    # actions = forms.ModelMultipleChoiceField(
+    #     queryset=None, label="Події, які надіслати",
+    #     widget=forms.SelectMultiple(
+    #         attrs={'class': "form-control"}
+    #     )
+    # )
 
     class Meta:
-        model = HelpReply
-        fields = ("actions", "text")
+        model = Reply
+        fields = "__all__"
         widgets = {
-            "description": forms.Textarea(attrs={"class": "form-control"})
+            "text": forms.Textarea(attrs={"class": "form-control"})
         }
-
-    def __init__(self, *args, **kwargs):
-        """
-        In button form can choose only action related to current channel.
-        """
-        action_qs = kwargs.pop("action_qs")
-        super().__init__(*args, **kwargs)
-
-        self.fields["actions"].queryset = action_qs
 
     def save(self, commit=True):
         reply = super().save(commit=False)

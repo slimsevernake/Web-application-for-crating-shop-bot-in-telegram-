@@ -71,7 +71,7 @@ function timeOut(clickCount, element) {
     function countdown(seconds) {
         let i = seconds;
 
-        element.after(`<span id="timer" class="text-danger small">Зможете повторити через <span id="counter">${i}</span> секунд</span>`);
+        element.after(`<span id="timer" class="text-danger small">Сможете повторить через <span id="counter">${i}</span> секунд</span>`);
 
         let timerId = setInterval(() => {
             $('#counter').html(--i);

@@ -14,7 +14,7 @@ from django.views.generic import (
 from telegram_api.api import (
     get_bot_info as tg_bot_info,
     get_webhook_info as tg_webhook_info,
-    set_webhook_ajax as tg_set_webhook_ajax,
+    set_webhook as tg_set_webhook_ajax,
     unset_webhook_ajax as tg_remove_webhook_ajax
 
 )
@@ -23,23 +23,25 @@ from telegram_api.handlers import (
 )
 
 from .forms import (
-    BotUpdateForm, BotForm
+     BotForm
 )
-from .mixins import ModeratorRequiredMixin
+from .mixins import ModeratorRequiredMixin, OwnerRequiredMixin
 from .models import Bot
 from .services import (
     get_bot_by_slug,
     get_all_available_bots_to_moderator,
+    get_all_users_bots,
     get_bots_to_json, extract_data,
     get_moderators_to_json,
 )
+
 # from keyboards.services import get_actions_related_to_channel
 
 logger = logging.getLogger(__name__)
 
 
 def root_view(request):
-    return redirect("bots-management:channel-list")
+    return redirect("bots-management:bot-list")
 
 
 def notfound(request, exception=None):
@@ -57,13 +59,14 @@ class BotListView(LoginRequiredMixin, ListView):
     Only related to user channels will be displayed
     """
     model = Bot
-    template_name = "bots_management/channel_list.html"
+    template_name = "bots_management/bot_list.html"
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
 
         user = self.request.user
-        context["channels"] = get_all_available_bots_to_moderator(user)
+        context["bots_to_management"] = get_all_available_bots_to_moderator(user)
+        context["bots"] = get_all_users_bots(user)
         return context
 
 
@@ -72,8 +75,8 @@ class BotDetailView(ModeratorRequiredMixin, DetailView):
     Get info can only moderator or superuser.
     """
     model = Bot
-    template_name = "bots_management/channel_details.html"
-    context_object_name = "channel"
+    template_name = "bots_management/bot_details.html"
+    context_object_name = "bot"
 
     def get_context_data(self, **kwargs) -> dict:
         context = super(BotDetailView, self).get_context_data()
@@ -95,40 +98,43 @@ class BotDetailView(ModeratorRequiredMixin, DetailView):
         return context
 
 
-class BotUpdateView(ModeratorRequiredMixin, UpdateView):
+class BotUpdateView(OwnerRequiredMixin, UpdateView):
     """
     Bot can update only moderator or superuser.
     """
     model = Bot
     template_name = "bots_management/bot_update.html"
+    context_object_name = "bot"
 
     def get_success_url(self):
         return reverse_lazy(
-            "bots-management:channel-detail",
-            kwargs={"slug": self.object.channel.slug}
+            "bots-management:bot-detail",
+            kwargs={"slug": self.object.slug}
         )
 
-    # TODO: fix this
-
-    # def get_form(self, *args, **kwargs):
-    #     channel = get_channel_by_slug(self.kwargs["slug"])
-    #     if channel:
-    #         return BotUpdateForm(**self.get_form_kwargs(), channel=channel)
-    #     else:
-    #         raise Http404
+    def get_form(self, *args, **kwargs):
+        bot = get_bot_by_slug(self.kwargs["slug"])
+        if bot:
+            return BotForm(**self.get_form_kwargs())
+        else:
+            raise Http404
 
 
-class BotCreateView(ModeratorRequiredMixin, CreateView):
+class BotCreateView(LoginRequiredMixin, CreateView):
     """
-    Channel can create only moderator or superuser.
+    Bot can be created only by a moderator or a superuser.
     """
     model = Bot
     template_name = "bots_management/bot_add.html"
 
+    def get_form(self, *args, **kwargs):
+        user = self.request.user
+        return BotForm(*args, **self.get_form_kwargs(), user=user)
+
     def get_success_url(self):
         return reverse_lazy(
-            "bots-management:channel-detail",
-            kwargs={"slug": self.object.channel.slug}
+            "bots-management:bot-detail",
+            kwargs={"slug": self.object.slug}
         )
 
 
@@ -137,8 +143,8 @@ class BotDeleteView(DeleteView):
     Channel can delete only superuser.
     """
     model = Bot
-    template_name = "bots_management/channel_delete.html"
-    success_url = reverse_lazy("bots-management:channel-list")
+    template_name = "bots_management/bot_delete.html"
+    success_url = reverse_lazy("bots-management:bot-list")
 
 
 @csrf_exempt
@@ -176,40 +182,12 @@ def telegram_index(request, slug):
 #         raise Http404
 
 
-# def channel_list_view(request):
-#     """
-#         Template for new front
-#     """
-#     form = ChannelFrontForm()
-#     return render(request, "bots_management/channels_new.html", {"form": form})
-
-
 def ajax_get_channels(request):
     """
         Get list of channels
     """
     if request.is_ajax():
         return HttpResponse(get_bots_to_json())
-    return Http404
-
-
-def ajax_webhook(request):
-    if request.is_ajax():
-        token = request.POST.get('token')
-        host = request.META['HTTP_HOST']
-        slug = request.POST.get('channel_url')
-        messenger = request.POST.get('messenger')
-        response = tg_set_webhook_ajax(slug, host, token)
-        return HttpResponse(json.dumps(response))
-    return Http404
-
-
-def ajax_unset_webhook(request):
-    if request.is_ajax():
-        token = request.POST.get('token')
-        messenger = request.POST.get('messenger')
-        response = tg_remove_webhook_ajax(token)
-        return HttpResponse(json.dumps(response))
     return Http404
 
 
@@ -221,17 +199,6 @@ def ajax_get_moderators(request):
         return HttpResponse(get_moderators_to_json())
     return Http404
 
-
-def keyboards_constructor_view(request):
-    """
-        Template for new front
-    """
-    form = BotForm()
-    return render(
-        request,
-        "bots_management/keyboards_constructor.html",
-        {"form": form}
-    )
 
 #
 # def statistics_view(request):

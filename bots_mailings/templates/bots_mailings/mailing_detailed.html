@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %} Розсилка {% endblock %}
+{% block title %} Розссылки {% endblock %}
 
 {% block links %}
     <a href="{% url 'bots-management:channel-list' %}"
        class="text-dark text-decoration-none">
-        Канали
+        Каналы
     </a><span class="text-dark">/</span>
     <a href="{% url 'bots-management:channel-detail' mailing.channel.slug %}"
        class="text-dark text-decoration-none">
@@ -13,7 +13,7 @@
     </a><span class="text-muted">/</span>
     <a href="{% url 'bots-management:mailings:mailing-list' mailing.channel.slug %}"
        class="text-dark text-decoration-none">
-        Розсилки
+        Рассылки
     </a><span class="text-muted">/</span>
     <a href="{{ mailing.get_absolute_url }}"
        class="text-dark text-decoration-none">
@@ -25,44 +25,38 @@
 
     <div class="card mt-3 bg-dark text-white">
         <div class="card-header">
-            <h3>Розсилка на канал
+            <h3>Рассылка на канал
                 <a href="{{ mailing.channel.get_full_detail_url }}">
                     {{mailing.channel }}
                 </a>
             </h3>
         </div>
         <div class="card-body">
-            <h5 class="card-title">Actions</h5>
-            <ul>
-                {% for action in mailing.actions.all %}
-                    <li> <a href="{{action.get_absolute_url}}">{{ action.name }}</a> </li>
-                {% endfor %}
-            </ul>
-            <p class="card-text">Була створенний: {{ mailing.created_at }}</p>
+            <p class="card-text">Дата создания: {{ mailing.created_at }}</p>
             {% if mailing.send_time %}
-                <p class="card-text">Запланований час відправки: {{ mailing.send_time }}</p>
+                <p class="card-text">Запланированное время отправки: {{ mailing.send_time }}</p>
             {% endif %}
             {% if mailing.send_to %}
-                <p class="card-text">Відправка користувачам:
+                <p class="card-text">Отправка пользователям:
                 {% for user in mailing.sento.all %}
                     {{user.name }}
                 {% endfor %}
                 </p>
             {% else %}
-                <p class="card-text">Відправка усім користувачам</p>
+                <p class="card-text">Отправка всем пользователям</p>
             {% endif %}
-            <p class="card-text">Доставлено:
+            <p class="card-text">Доставленно:
             {% if mailing.is_done %}
                 &#9989;
             {% else %}
                 &#10060;
             {% endif %}
             </p>
-            <a href="{% url "bots-management:mailings:mailing-list" mailing.channel.slug %}" class="btn btn-primary">До розсилок</a>
+            <a href="{% url "bots-management:mailings:mailing-list" mailing.channel.slug %}" class="btn btn-primary">К рассылкам</a>
             {% if not mailing.is_done %}
-                <a href="{{ mailing.get_update_url }}" class="btn btn-warning">Редагувати</a>
+                <a href="{{ mailing.get_update_url }}" class="btn btn-warning">Редактировать</a>
             {% endif %}
-            <a href=" {{ mailing.get_delete_url }}" class="btn btn-danger">Видалити</a>
+            <a href=" {{ mailing.get_delete_url }}" class="btn btn-danger">Удалить</a>
         </div>
     </div>
 

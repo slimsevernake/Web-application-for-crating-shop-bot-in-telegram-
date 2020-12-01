@@ -4,6 +4,8 @@ import env_file
 # Use .env file for creating env variables
 env = env_file.get()
 
+SITE_URL = env.get('SITE_URL')
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
@@ -93,7 +95,9 @@ AUTH_PASSWORD_VALIDATORS = [
              "NumericPasswordValidator", },
 ]
 
-LANGUAGE_CODE = "uk-UA"
+# Locale settings
+# LANGUAGE_CODE = "uk-UA"
+LANGUAGE_CODE = 'ru-RU'
 TIME_ZONE = "Europe/Kiev"
 USE_I18N = True
 USE_L10N = True

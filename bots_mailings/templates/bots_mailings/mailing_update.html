@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %} Редагувати розсилку для каналу {% endblock %}
+{% block title %} редактировать рассылку на канал {% endblock %}
 
 {% block links %}
     <a href="{% url 'bots-management:channel-list' %}"
        class="text-dark text-decoration-none">
-        Канали
+        Каналы
     </a><span class="text-dark">/</span>
     <a href="{% url 'bots-management:channel-detail' mailing.channel.slug  %}"
        class="text-dark text-decoration-none">
@@ -13,7 +13,7 @@
     </a><span class="text-muted">/</span>
     <a href="{% url 'bots-management:mailings:mailing-list' mailing.channel.slug %}"
        class="text-dark text-decoration-none">
-        Розсилки
+        Рассылки
     </a><span class="text-muted">/</span>
     <a href="{{ mailing.get_absolute_url }}"
        class="text-dark text-decoration-none">
@@ -21,17 +21,16 @@
     </a><span class="text-muted">/</span>
     <a href="{{ mailing.get_delete_url }}"
        class="text-dark text-decoration-none">
-        Редагувати
+        Редактировать
     </a>
 {% endblock %}
 
 {% block content %}
-    <h1 class="font-weight-normal">Редашувати розсилку для каналу
+    <h1 class="font-weight-normal">Редактировать рассылку на канал
         <span class="font-weight-bold">
             {{ channel_name }}
         </span>
     </h1>
-{#    <p class="text-danger">Розисилки у мессенджері Viber не можуть бути зміненими</p>#}
     <form method="POST" enctype="multipart/form-data" class="mb-3">{% csrf_token %}
         {% for field in form %}
             {% if not field.is_hidden %}
@@ -46,7 +45,7 @@
         {% endfor %}
 
         <input type="submit" class="btn btn-success" value="Редагувати">
-        <a href="{% url "bots-management:mailings:mailing-list" mailing.channel.slug %}" class="btn btn-danger">Скасувати</a>
+        <a href="{% url "bots-management:mailings:mailing-list" mailing.channel.slug %}" class="btn btn-danger">Отменить</a>
     </form>
 {% endblock %}
 

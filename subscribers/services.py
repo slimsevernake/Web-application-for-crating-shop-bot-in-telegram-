@@ -4,7 +4,7 @@ from django.db import ProgrammingError
 from django.db.models import Q, QuerySet, Count
 
 from bots_management.models import Bot
-from .models import Subscriber, Message, HelpReply
+from .models import Subscriber, Message, Reply
 
 
 def get_subscriber(uid: str, bot: Bot) -> Union[Subscriber, None]:
@@ -124,5 +124,5 @@ def get_all_closed_help_messages(slug: str) -> QuerySet:
     )
 
 
-def get_help_message_reply(pk: int) -> Union[HelpReply, None]:
-    return HelpReply.objects.filter(pk=pk).first()
+def get_help_message_reply(pk: int) -> Union[Reply, None]:
+    return Reply.objects.filter(pk=pk).first()

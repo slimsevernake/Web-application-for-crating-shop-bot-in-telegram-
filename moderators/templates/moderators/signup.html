@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Реєстрація модератора{% endblock %}
+{% block title %}Регистрация{% endblock %}
 
 {% block content %}
     <div class="row d-flex justify-content-center">
         <form method="POST" class="d-flex w-25 flex-column bg-dark p-3 m-2" id="form">
             {% csrf_token %}
-            <h2 class="display-5 text-center text-light ">Зареєстуватися</h2>
+            <h2 class="display-5 text-center text-light ">Регистрация</h2>
             {% for field in form %}
                 {% if not field.is_hidden %}
                     <div class="form-group">
@@ -18,7 +18,7 @@
                     </div>
                 {% endif %}
             {% endfor %}
-            <button type="submit" class="btn btn-light w-50" id="signup">Зарєстуватися</button>
+            <button type="submit" class="btn btn-light w-50" id="signup">Зарегистрироваться</button>
         </form>
     </div>
 {% endblock %}

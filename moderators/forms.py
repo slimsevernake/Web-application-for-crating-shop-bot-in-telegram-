@@ -8,22 +8,22 @@ class ModeratorRegisterForm(UserCreationForm):
     first_name = forms.CharField(
         max_length=30,
         required=False,
-        label="Ім'я",
+        label="Имя",
         # widget=forms.TextInput(attrs={'class': 'main-form__field'})
-        widget = forms.TextInput(attrs={'class': 'form-control'})
+        widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     last_name = forms.CharField(
         max_length=30,
         required=False,
-        label='Прізвище',
+        label='Фамилия',
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     username = forms.CharField(
-        label='Логін',
+        label='Логин',
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     email = forms.EmailField(
-        label='Поштова адреса',
+        label='Почтовый адрес',
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     password1 = forms.CharField(
@@ -32,7 +32,7 @@ class ModeratorRegisterForm(UserCreationForm):
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
     password2 = forms.CharField(
-        label="Підтвердження паролю",
+        label="Подтверждение пароля",
         required=False,
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
@@ -47,7 +47,7 @@ class ModeratorLoginForm(auth_forms.AuthenticationForm):
     Add label and styles to default authentication form
     """
     username = forms.CharField(
-        label='Логін',
+        label='Логин',
         # widget=forms.TextInput(attrs={'class': 'main-form__field',
         #                               'autocomplete': "off"})
         widget=forms.TextInput(attrs={'class': 'form-control',
@@ -65,21 +65,21 @@ class ModeratorEditProfileForm(auth_forms.UserChangeForm):
     Add label and styles to default UserChangeForm form
     """
     username = forms.CharField(
-        label='Логін',
+        label='Логин',
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     first_name = forms.CharField(
-        label="Ім'я",
+        label="Имя",
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     last_name = forms.CharField(
-        label='Прізвище',
+        label='Фамилия',
         required=False,
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     email = forms.CharField(
-        label='Поштова адреса',
+        label='Почтовый адрес',
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
@@ -102,7 +102,7 @@ class ModeratorChangePasswordForm(auth_forms.PasswordChangeForm):
     Add label and styles to default PasswordChangeForm form
     """
     old_password = forms.CharField(
-        label='Поточний пароль',
+        label='Текущий пароль',
         widget=forms.PasswordInput(attrs={'class': 'form-control'}),
     )
     new_password1 = forms.CharField(
@@ -110,6 +110,6 @@ class ModeratorChangePasswordForm(auth_forms.PasswordChangeForm):
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
     new_password2 = forms.CharField(
-        label='Підтвердження нового паролю',
+        label='Подтверждение нового пароля',
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )

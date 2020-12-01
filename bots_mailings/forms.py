@@ -26,8 +26,7 @@ class MailingForm(forms.ModelForm):
         queryset=None,
         label="Відправити підписникам",
         help_text="""
-            Якщо хочете відправити усім користувачам,
-            залиште це поле пустим
+            Если хотеите отправить всем подписчикам оставьте это поле пустым 
         """,
         required=False,
         widget=forms.SelectMultiple(
@@ -38,22 +37,13 @@ class MailingForm(forms.ModelForm):
         )
     )
 
-    actions = forms.ModelMultipleChoiceField(
-        queryset=None,
-        label="Контент для розсилки",
-        widget=forms.SelectMultiple(
-            attrs={
-                'class': "form-control js-example-basic-multiple",
-                'multiple': "multiple"
-            }
-        )
-    )
+    #TODO:add fields
 
     send_time = forms.DateTimeField(
         label="Час відправки",
         required=False,
         localize=True,
-        help_text="Якщо хочете відправити зараз, залиште це поле пустим",
+        help_text="Если хотите отправить сейчас - оставьте это поле пустым",
         input_formats=format("%m/%d/%y %H:%M"),
         widget=forms.DateTimeInput(
             attrs={
@@ -84,14 +74,13 @@ class MailingForm(forms.ModelForm):
         """
         send_time = self.cleaned_data.get('send_time')
         if send_time and send_time < timezone.now():
-            raise ValidationError("Розсилка не може бути виконана в минулому!")
+            raise ValidationError("Невозможно отправить сообщение в прошлом!")
         return send_time
 
     class Meta:
         fields = (
             'bot',
             'author',
-            'actions',
             'send_time',
             'send_to',
         )
@@ -105,7 +94,6 @@ class MailingUpdateForm(MailingForm):
     class Meta:
         model = Post
         fields = (
-            'actions',
             'send_time',
             'send_to'
         )
@@ -116,6 +104,6 @@ class MailingUpdateForm(MailingForm):
         """
         if self.cleaned_data.get('send_time') and self.instance.is_done:
             raise ValidationError(
-                "Неможливо змінити час відправки вже відпраленної розсилки!"
+                "Невозможно изменить время отправки уже отправленного сообщения"
             )
         return super().clean_send_time()

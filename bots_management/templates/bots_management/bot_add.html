@@ -1,16 +1,15 @@
 {% extends "base.html" %}
-{% block title %}Додати нового бота{% endblock %}
+{% block title %}Добавить нового бота{% endblock %}
 
 {% block links %}
-    <a href="{% url 'bots-management:channel-list' %}"
+    <a href="{% url 'bots-management:bot-list' %}"
            class="mt-3 mb-3 text-dark text-decoration-none">
-            Канали
+            Боты
     </a><span class="text-dark">/</span>
-    {#  TODO we don't have slug when page loaded!! #}
-    {#<a href="{% url 'bots-management:channel-detail' channel.slug %}"#}
-           {# class="mt-3 mb-3 text-dark text-decoration-none">#}
-           {# {{ channel.name }}#}
-    {#</a><span class="text-muted">/ Додати бота</span>#}
+    <a href="{% url "bots-management:bot-create" %}"
+       class="mt-3 mb-3 text-dark text-decoration-none">
+        Додати бота
+    </a>
 {% endblock %}
 
 {% block content %}
@@ -18,7 +17,7 @@
      {#  class="btn btn-info btn-lg active mt-3 mb-3">#}
     {#    &#8592 Назад#}
     {#</a> #}
-    <h2 class="display-5 text-center">Додати нового бота</h2>
+    <h2 class="display-5 text-center">Добавить нового бота</h2>
     <div class="row mx-auto">
         <div class="col-md">
             <form method="post">{% csrf_token %}
@@ -26,8 +25,8 @@
                     {{ form }}
                 </table>
                 <br>
-                <input type="submit" class="btn btn-success" value="Зберегти">
-                {#<a class="btn btn-danger" href="{% url 'bots-management:channel-detail' channel.slug %}">Скасувати</a>#}
+                <input type="submit" class="btn btn-success" value="Сохранить">
+                <a class="btn btn-danger" href="{% url 'bots-management:bot-list' %}">Отменить</a>
             </form>
         </div>
     </div>
@@ -38,6 +37,7 @@
     <script>
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
+            $('.js-example-basic-multiple').select2();
         });
     </script>
 {% endblock scripts %}

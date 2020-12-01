@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %} Створити розсилку для каналу {% endblock %}
+{% block title %} Создать рыссылку для канала {% endblock %}
 
 {% block links %}
     <a href="{% url 'bots-management:channel-list' %}"
        class="text-dark text-decoration-none">
-        Канали
+        Каналы
     </a><span class="text-dark">/</span>
     <a href="{% url 'bots-management:channel-detail' form.channel.value.slug  %}"
        class="text-dark text-decoration-none">
@@ -13,13 +13,13 @@
     </a><span class="text-muted">/</span>
     <a href="{% url 'bots-management:mailings:mailing-list' form.channel.value.slug  %}"
        class="text-dark text-decoration-none">
-        Розсилки
-    </a><span class="text-muted">/Create</span>
+        Рассылки
+    </a><span class="text-muted">/Создание</span>
 
 {% endblock %}
 
 {% block content %}
-    <h1 class="font-weight-normal">Створити розсилку для каналу
+    <h1 class="font-weight-normal">Создать рассылку для канала
         <span class="font-weight-bold">
             {{ channel_name }}
         </span>
@@ -41,10 +41,10 @@
             {% endif %}
         {% endfor %}
         <div class="mt-3 mb-3">
-            <a href="{% url 'bots-management:keyboards:action-create' channel.slug %}" class="btn btn-info">Додати контент</a>
+            <a href="{% url 'bots-management:keyboards:action-create' channel.slug %}" class="btn btn-info">Добавить</a>
         </div>
         <input type="submit" class="btn btn-success" value="Створити">
-        <a href="{% url "bots-management:mailings:mailing-list" channel.slug %}" class="btn btn-danger">Скасувати</a>
+        <a href="{% url "bots-management:mailings:mailing-list" channel.slug %}" class="btn btn-danger">Отменить</a>
     </form>
 {% endblock %}
 

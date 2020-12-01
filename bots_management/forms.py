@@ -1,48 +1,46 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
+from django.utils.text import slugify
 
 from bots_management.models import Bot
-from bots_management.services import get_all_bots
-from keyboards.models import Action
 
 
 class BotForm(forms.ModelForm):
     name = forms.CharField(
-        label='Назва боту',
+        label='Название бота',
         widget=forms.TextInput(attrs={'class': 'form-control modal__field',
-                                      'id': 'i_title'})
-    )
-    slug = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control modal__field',
-                                      'id': 'i_url'})
+                                      'id': 'i_title'}),
+        help_text="*Название бота лишь для отображения на сайте",
+        error_messages={'unique': 'Бот с таким названием уже существет'}
     )
     token = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control'})
+        label='Телеграм токен',
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        help_text="*Токен должен быть уникальным для каждого бота",
+        error_messages={'unique': 'Бот с таким токеном уже существет'}
     )
-    is_media_allowed = forms.CheckboxInput(attrs={
-        'class': 'form-control modal__field',
-        'id': 'i_allowUserMedia'
-    })
+
     description = forms.CharField(
+        label='Описание',
         required=False,
         widget=forms.Textarea(attrs={
             'class': 'form-control modal__field',
             'id': 'i_description'
-        })
+        }),
+        help_text="*Описание бота лишь для отображения на сайте"
     )
-    welcome_action = forms.ModelChoiceField(
-        label='Привітальне повідомлення', required=False,
-        queryset=Action.objects.none(),
-        widget=forms.Select(
-            attrs={'class': "form-control js-example-basic-single"}
-        )
-    )
+
     moderators = forms.ModelMultipleChoiceField(
-        label='Модератори', queryset=get_user_model().objects.all(),
-        required=False, widget=forms.SelectMultiple(
-            attrs={'class': "select2-search",
-                   'id': "i_moderators"}
+        label='Модераторы',
+        # help_text="Если не хотите добавлять модератов, то оставьте это поле пустым.",
+        queryset=get_user_model().objects.all(),
+        required=False,
+        widget=forms.SelectMultiple(
+            attrs={
+                'class': "form-control js-example-basic-multiple select2-search",
+                'id': "i_moderators",
+                'multiple': "multiple"
+            }
         )
     )
 
@@ -50,29 +48,24 @@ class BotForm(forms.ModelForm):
         model = Bot
         fields = (
             'name',
-            'slug',
             'token',
             'description',
             'moderators',
-            'is_media_allowed',
-            'welcome_action'
         )
 
-    def clean_token(self):
-        token = self.cleaned_data.get("token")
-        bots = get_all_bots()
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user", None)
+        super().__init__(*args, **kwargs)
 
-        if token in (bot.token for bot in bots):
-            raise ValidationError("Такий токен вже існує")
+    def save(self, commit=True):
+        """
+        Automatically saves user, who's created a channel as a moder, and try to set webhook
+        """
+        bot = super().save(commit=False)
+        bot.slug = slugify(self.cleaned_data["name"])
+        if not bot.owner:
+            bot.owner = self.user
+        if commit:
+            bot.save()
+        return bot
 
-        return token
-
-
-class BotUpdateForm(BotForm):
-    class Meta:
-        model = Bot
-        fields = ("token", "description",)
-        widgets = {
-            "token": forms.TextInput(attrs={'class': 'form-control'}),
-            "description": forms.Textarea(attrs={'class': 'form-control'})
-        }

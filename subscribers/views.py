@@ -9,7 +9,7 @@ from keyboards.services import get_actions_related_to_bot
 from subscribers.forms import (
     ReplyHelpMessageForm, SubscribersChoiceForm
 )
-from subscribers.models import Subscriber, HelpReply
+from subscribers.models import Subscriber, Reply
 from subscribers.services import (
     get_messages_subscribers_of_bot, get_all_help_messages,
     get_all_active_help_messages, get_all_started_help_messages,
@@ -122,7 +122,7 @@ class HelpMessagesListView(ModeratorRequiredMixin, generic.ListView):
 class HelpMessageReplyDetailView(ModeratorRequiredMixin, generic.DetailView):
     template_name = "subscribers/help_message_detail.html"
     context_object_name = "reply"
-    model = HelpReply
+    model = Reply
 
     def get_object(self, queryset=None):
         return get_help_message_reply(pk=self.kwargs["pk"])
@@ -136,13 +136,8 @@ class HelpMessageReplyDetailView(ModeratorRequiredMixin, generic.DetailView):
 
 class HelpMessageReplyView(ModeratorRequiredMixin, generic.UpdateView):
     template_name = "subscribers/help_message_reply.html"
-    model = HelpReply
-
-    def get_form(self, form_class=None):
-        return ReplyHelpMessageForm(
-            **self.get_form_kwargs(),
-            action_qs=get_actions_related_to_bot(slug=self.kwargs["slug"]),
-        )
+    model = Reply
+    form_class = ReplyHelpMessageForm
 
     def get_object(self, queryset=None):
         """

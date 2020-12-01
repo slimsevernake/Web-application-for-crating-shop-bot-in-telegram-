@@ -11,7 +11,6 @@ from telebot.apihelper import ApiException
 
 from moviepy.editor import VideoFileClip
 
-from keyboards.models import IdFilesInMessenger
 
 logger = logging.getLogger(__name__)
 
@@ -113,6 +112,7 @@ def send_photo(chat_id: int, token: str,
 def check_file_id(action: object,
                   file_path: str,
                   token: str) -> Union[str, None]:
+    from keyboards.models import IdFilesInMessenger
     info = IdFilesInMessenger.objects.filter(action=action, token_tg=token)
     if info.exists():
         info = info.first()
@@ -123,7 +123,8 @@ def check_file_id(action: object,
 def update_or_create_file_id(action: object,
                              file_path: str = None,
                              file_id: str = None,
-                             token: str = None) -> IdFilesInMessenger:
+                             token: str = None) -> "keIdFilesInMessenger":
+    from keyboards.models import IdFilesInMessenger
     return IdFilesInMessenger.objects.update_or_create(
         action=action,
         token_tg=token,
@@ -298,7 +299,7 @@ def delete_message(chat_id: Union[str, int], message_id: int,
         )
 
 
-def set_webhook_ajax(slug: str, host: str, token: str) -> dict:
+def set_webhook(slug: str, host: str, token: str) -> dict:
     """
     Sets telegram webhook for certain channel.
     """
