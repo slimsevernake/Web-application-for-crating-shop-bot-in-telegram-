@@ -5,7 +5,6 @@ from django.views import generic
 
 from bots_management.mixins import ModeratorRequiredMixin
 from bots_management.services import get_bot_by_slug
-from keyboards.services import get_actions_related_to_bot
 from subscribers.forms import (
     ReplyHelpMessageForm, SubscribersChoiceForm
 )

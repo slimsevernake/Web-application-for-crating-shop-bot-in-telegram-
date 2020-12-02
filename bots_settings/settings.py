@@ -38,10 +38,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "bots_management.apps.BotsManagementConfig",
-    "keyboards.apps.KeyboardsConfig",
+    # "keyboards.apps.KeyboardsConfig",
     "subscribers.apps.SubscribersConfig",
     "moderators.apps.ModeratorsConfig",
     "bots_mailings.apps.BotsMailingsConfig",
+    "administration.apps.AdministrationConfig",
+    "products.apps.ProductsConfig",
+    "orders.apps.OrdersConfig"
     # "old_code_for_use.analytics.apps.AnalyticsConfig",
 ]
 

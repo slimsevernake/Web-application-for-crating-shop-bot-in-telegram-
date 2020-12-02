@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %} Створити клавіатуру {% endblock %}
+
+{% block links %}
+    <a href="{% url 'bots-management:channel-list' %}"
+       class="text-dark text-decoration-none">
+        Канали
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:channel-detail' channel.slug %}"
+       class="text-dark text-decoration-none">
+        {{ channel.name }}
+    </a><span class="text-muted">/</span>
+    <a href="{% url 'bots-management:keyboards:keyboard-list' channel.slug %}"
+       class="text-dark text-decoration-none">
+        Клавіатури
+    </a>
+    <span class="text-muted">/ Створення</span>
+{% endblock %}
+
+{% block content %}
+
+    <h1>Створити клавіатуру</h1>
+    <form method="POST">{% csrf_token %}
+        {% for field in form %}
+            {% if not field.is_hidden %}
+                <div class="form-group">
+                    <label for="{{ field.auto_id }}">{{ field.label_tag }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="text-danger"> {{ field.errors }} </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <input type="submit" class="btn btn-success" value="Додати клавіатуру">
+        <a class="btn btn-info" href="{% url 'bots-management:keyboards:keyboard-list' channel.slug %}">Скасувати</a>
+    </form>
+{% endblock %}

@@ -4,7 +4,6 @@ from django.utils import timezone
 
 from bots_mailings.models import Post
 from bots_management.services import get_bot_by_slug
-from keyboards.services import get_actions_related_to_bot
 from subscribers.models import Subscriber
 
 
@@ -59,9 +58,7 @@ class MailingForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['author'].initial = user
         self.fields['bot'].initial = get_bot_by_slug(channel_slug)
-        self.fields['actions'].queryset = get_actions_related_to_bot(
-            channel_slug
-        )
+        self.fields['actions'].queryset = None,
         self.fields['send_to'].queryset = Subscriber.objects.filter(
                     bot=get_bot_by_slug(channel_slug),
                     is_active=True

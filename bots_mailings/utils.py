@@ -15,120 +15,27 @@ from telegram_api.api import (
 )
 from bots_mailings.models import Post, SentMessage
 from bots_mailings.services import create_sent_message_object
-from keyboards.models import Action
 
 
 logger = logging.getLogger(__name__)
 
 
 def send_action_to_telegram_user(
-        chat_id: int, action: Action, post: Post) -> None:
+        chat_id: int, ac, post: Post) -> None:
     """
     Parse action due to it`s type
     and send message with provided content to chat_id
     """
-    token = post.channel.telegram_token
-    if not action.action_type == "text":
-
-        if action.action_type == "picture" and action.picture:
-            response: Message = tg_send_photo(
-                chat_id=chat_id,
-                file_path=action.picture.path,
-                token=token
-            )
-            create_sent_message_object(
-                chat_id=response.chat.id,
-                message_id=response.message_id,
-                post=post,
-                action=action
-            )
-
-        elif action.action_type == "url" and action.url:
-            response: Message = tg_send_message(
-                chat_id=chat_id,
-                text=action.url,
-                token=token
-            )
-            create_sent_message_object(
-                chat_id=response.chat.id,
-                message_id=response.message_id,
-                post=post,
-                action=action
-            )
-        elif action.action_type == "video" and action.video:
-            response: Message = tg_send_video(
-                chat_id=chat_id,
-                file_path=action.video.path,
-                token=token
-            )
-            create_sent_message_object(
-                chat_id=response.chat.id,
-                message_id=response.message_id,
-                post=post,
-                action=action
-            )
-        elif action.action_type == "file" and action.file:
-            response: Message = tg_send_document(
-                chat_id=chat_id,
-                file_path=action.file.path,
-                token=token
-            )
-            create_sent_message_object(
-                chat_id=response.chat.id,
-                message_id=response.message_id,
-                post=post,
-                action=action
-            )
-        elif all([action.action_type == "location",
-                  action.location_latitude,
-                  action.location_longitude]):
-            response: Message = tg_send_location(
-                chat_id=chat_id,
-                lon=int(action.location_longitude),
-                lat=int(action.location_latitude),
-                token=token
-            )
-            create_sent_message_object(
-                chat_id=response.chat.id,
-                message_id=response.message_id,
-                post=post,
-                action=action
-            )
-        elif action.action_type == "sticker" and action.sticker_id:
-            data = action.sticker_id
-            response: Message = tg_send_sticker(
-                chat_id=chat_id,
-                sticker_id=data,
-                token=token
-            )
-            create_sent_message_object(
-                chat_id=response.chat.id,
-                message_id=response.message_id,
-                post=post,
-                action=action
-            )
-    response: Message = tg_send_message(
-        chat_id=chat_id,
-        text=action.text,
-        token=token
-    )
-    create_sent_message_object(
-        chat_id=response.chat.id,
-        message_id=response.message_id,
-        post=post,
-        action=action
-    )
-
+    pass
 
 def send_action_to_telegram_users(
-        subscriber_list: list, action: Action, post: Post) -> None:
+        subscriber_list: list, post: Post) -> None:
     """
     Send action to all telegram subscribers in subscriber_list
     """
     for subscriber in subscriber_list:
         send_action_to_telegram_user(
             chat_id=subscriber.user_id,
-            action=action,
             post=post
         )
 

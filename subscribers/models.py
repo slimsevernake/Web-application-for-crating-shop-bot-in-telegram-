@@ -55,6 +55,7 @@ class Subscriber(models.Model):
                        kwargs={"slug": self.chat_id})
 
 
+# TODO: remove
 class Message(models.Model):
     """
     Model representing message.
@@ -158,3 +159,5 @@ class Reply(models.Model):
             kwargs={"slug": self.message.sender.bot.slug,
                     "pk": self.pk}
         )
+
+

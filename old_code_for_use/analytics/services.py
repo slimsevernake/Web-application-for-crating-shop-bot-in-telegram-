@@ -8,7 +8,7 @@ from django.db.models import Count, QuerySet
 from django.utils import timezone
 
 from bots_management.models import Bot
-from keyboards.models import Button
+from old_code_for_use.keyboards import Button
 from subscribers.models import Message, Subscriber
 
 logger = logging.getLogger(__name__)

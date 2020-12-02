@@ -112,7 +112,7 @@ def send_photo(chat_id: int, token: str,
 def check_file_id(action: object,
                   file_path: str,
                   token: str) -> Union[str, None]:
-    from keyboards.models import IdFilesInMessenger
+    from old_code_for_use.keyboards import IdFilesInMessenger
     info = IdFilesInMessenger.objects.filter(action=action, token_tg=token)
     if info.exists():
         info = info.first()
@@ -124,7 +124,7 @@ def update_or_create_file_id(action: object,
                              file_path: str = None,
                              file_id: str = None,
                              token: str = None) -> "keIdFilesInMessenger":
-    from keyboards.models import IdFilesInMessenger
+    from old_code_for_use.keyboards import IdFilesInMessenger
     return IdFilesInMessenger.objects.update_or_create(
         action=action,
         token_tg=token,

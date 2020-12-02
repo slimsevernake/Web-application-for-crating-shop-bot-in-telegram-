@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %} Редагування події {% endblock %}
+
+{% block links %}
+    <a href="{% url 'bots-management:channel-list' %}"
+       class="text-dark text-decoration-none">
+        Канали
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:channel-detail' action.keyboard_to_represent.channel.slug %}"
+       class="text-dark text-decoration-none">
+        {{ action.keyboard_to_represent.channel.name }}
+    </a><span class="text-muted">/</span>
+    <a href="{% url 'bots-management:keyboards:keyboard-list' action.keyboard_to_represent.channel.slug %}"
+       class="text-dark text-decoration-none">
+        Клавіатури
+    </a><span class="text-muted">/</span>
+    <a href="{% url 'bots-management:keyboards:action-list' action.keyboard_to_represent.channel.slug %}"
+       class="text-dark text-decoration-none">
+        Події
+    </a><span class="text-muted">/</span>
+    <a href="{{ action.get_absolute_url }}"
+       class="text-dark text-decoration-none">
+        Подія {{ action.name }}
+    </a>
+    <span class="text-muted">/ Редагування</span>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-7">
+    <form method="POST" enctype="multipart/form-data" class="mb-3">{% csrf_token %}
+        <table>
+        {% for field in form %}
+            <tr>
+            {% if not field.is_hidden %}
+                <th width="25%">
+                    <label for="{{ field.auto_id }}">{{ field.label_tag }}</label>
+                </th>
+                <td>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="text-danger"> {{ field.errors }} </div>
+                    {% endif %}
+               </td>
+            {% endif %}
+        {% endfor %}
+        </table>
+        <input type="submit" class="btn btn-success" value="Приняти зміни">
+        <a href="{% url 'bots-management:keyboards:action-list' action.keyboard_to_represent.channel.slug %}" class="btn btn-danger">
+            Скасувати
+        </a>
+    </form>
+</div>
+     <div class="col-md-5  text-center">
+        <p class="h6" id="preload_photo" style="display:None"> Попередній перегляд фото </p>
+  <output id="list"></output>
+
+    </div></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    //activation image preview
+    function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+    // Loop through the FileList and render image files as thumbnails.
+    var tmp_list = document.getElementById('list')
+    var tmp_p = document.getElementById('preload_photo').style.display = 'block';
+    visible = true;
+    for (var i = 0, f; f = files[i]; i++) {
+      // Only process image files.
+      if (!f.type.match('image.*')) {
+        continue;
+      }
+      var reader = new FileReader();
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        return function(e) {
+          // Render thumbnail.
+          var span = document.createElement('span');
+          span.innerHTML = ['<img class="thumb" height=300px, src="', e.target.result,
+                            '" title="', theFile.name, '"/>'].join('');
+          tmp_list.insertBefore(span, null);
+        };
+      })(f);
+          // Read in the image file as a data URL.
+          reader.readAsDataURL(f);
+        }
+      }
+    document.getElementById('image_preload').addEventListener('change', handleFileSelect, false);
+   </script>
+{% endblock scripts %}

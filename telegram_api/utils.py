@@ -4,7 +4,7 @@ from urllib.request import urlretrieve, urlcleanup
 from telebot import TeleBot
 from django.core.files import File
 
-from keyboards.models import Action
+from old_code_for_use.keyboards import Action
 from telebot.types import KeyboardButton
 from telebot.types import ReplyKeyboardMarkup
 from bots_management.models import Channel

@@ -1,5 +1,3 @@
-from typing import Union
-
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
@@ -7,6 +5,18 @@ from django.utils.text import slugify
 
 from django.conf import settings
 from telegram_api.api import set_webhook as set_telegram_webhook
+from administration.models import (
+    Country, DeliveryType, PaymentType, Currency
+)
+
+
+class TermsOfAgreementException(Exception):
+    def __init__(self, message="Без пользовательского соглашения невозможно создать бота"):
+        self.message = message
+        super().__init__(message)
+
+    def __str__(self):
+        return self.message
 
 
 class Bot(models.Model):
@@ -24,8 +34,21 @@ class Bot(models.Model):
     owner = models.ForeignKey(
         get_user_model(), blank=True, verbose_name="Хозяин", on_delete=models.CASCADE, related_name="bots"
     )
-    moderators = models.ManyToManyField(
-        get_user_model(), blank=True, verbose_name="Модераторы", related_name="bots_to_management"
+    telegram_operator = models.CharField(
+        "Ссылка на телеграм оператора", max_length=255
+    )
+
+    available_countries = models.ManyToManyField(
+        Country, verbose_name="Доступные страны", related_name="bots"
+    )
+    available_delivery_type = models.ManyToManyField(
+        DeliveryType, verbose_name="Доступные типы доставок", related_name="bots"
+    )
+    available_payment_types = models.ManyToManyField(
+        PaymentType, verbose_name="Доступные способы оплаты", related_name="bots"
+    )
+    currency = models.ForeignKey(
+        Currency, verbose_name="Валюта бота", related_name="bots", on_delete=models.SET_NULL, null=True
     )
     is_webhook_set = models.BooleanField(
         "Установлен ли вебхук", default=False
@@ -34,6 +57,7 @@ class Bot(models.Model):
         verbose_name="Приветственное сообщение", blank=True,
         null=True, default=None
     )
+    terms_of_agreement = models.BooleanField("Пользовательское соглашение", default=False)
 
     class Meta:
         verbose_name = "Бот"

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title%} Видалення {% endblock %}
+
+{% block links %}
+    <a href="{% url 'bots-management:channel-list' %}"
+       class="text-dark text-decoration-none">
+        Канали
+    </a><span class="text-dark">/</span>
+    <a href="{% url 'bots-management:channel-detail' object.keyboard.channel.slug %}"
+       class="text-dark text-decoration-none">
+        {{ object.keyboard.channel.name }}
+    </a><span class="text-muted">/</span>
+    <a href="{% url 'bots-management:keyboards:keyboard-list' object.keyboard.channel.slug %}"
+       class="text-dark text-decoration-none">
+        Клавіатури
+    </a><span class="text-dark">/</span>
+    <a class="text-dark text-decoration-none" href="{{ object.keyboard.get_absolute_url }}">
+        {{ object.keyboard.name }}
+    </a>
+    <span class="text-muted">/</span>
+    <a class="text-dark text-decoration-none" href="{{ object.get_update_url }}">
+        Кнопка {{ object.name }}
+    </a>
+    <span class="text-muted">/ Видалення</span>
+{% endblock %}
+
+{% block content %}
+       <form method="post">{% csrf_token %}
+		    <p>Ви дійсно бажаєте видалити кнопку "{{ object.name }}" клавіатури "{{ object.keyboard.name }}"?</p>
+		    <input type="submit" class="btn btn-danger" value="Підтверджую">
+		</form>
+{% endblock %}
